@@ -2,11 +2,19 @@
 <resources>
 
     <string name="app_name">Mississauga Transit</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+
+    <!-- Section names -->
+    <string name="title_favorites">Favourites</string>
+    <string name="title_routes">Routes</string>
+    <string name="title_stops">Stops</string>
+    <string name="title_map">Map</string>
+
+
+    <!-- -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Actions -->
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
