@@ -14,6 +14,7 @@
 
     </style>
 
+    <!-- Navigation Drawer -->
     <style name="MainNavigationDrawer">
         <item name="android:divider">@android:color/transparent</item>
         <item name="android:dividerHeight">0dp</item>
@@ -29,6 +30,19 @@
     <style name="MainNavigationDrawerText">
         <item name="android:padding">10dp</item>
         <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Route Item -->
+    <style name="ItemRouteNumberTextView">
+        <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="ItemRouteNameTextView">
+        <item name="android:textColor">#000</item>
+    </style>
+
+    <style name="ItemRouteHeadingTextView">
+        <item name="android:textColor">#000</item>
     </style>
 
 

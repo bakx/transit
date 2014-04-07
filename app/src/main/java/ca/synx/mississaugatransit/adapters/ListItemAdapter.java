@@ -13,9 +13,7 @@ import java.util.List;
 import ca.synx.mississaugatransit.app.R;
 import ca.synx.mississaugatransit.interfaces.IListItem;
 
-
 public class ListItemAdapter<T extends IListItem> extends ArrayAdapter<T> {
-
     private Context mContext;
     private int mResourceId;
     private List<T> mList;
@@ -31,31 +29,30 @@ public class ListItemAdapter<T extends IListItem> extends ArrayAdapter<T> {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
-        View v = view;
         Holder holder = new Holder();
 
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inflater.inflate(mResourceId, null);
+            view = inflater.inflate(mResourceId, null);
 
-            holder.mText = (TextView) v.findViewById(R.id.textView);
-            holder.mImage = (ImageView) v.findViewById(R.id.imageView);
+            holder.mText = (TextView) view.findViewById(R.id.textView);
+            holder.mImage = (ImageView) view.findViewById(R.id.imageView);
 
             // Cache holder for performance reasons.
-            v.setTag(holder);
+            view.setTag(holder);
         } else {
             // Retrieve holder from Cache.
-            holder = (Holder) v.getTag();
+            holder = (Holder) view.getTag();
         }
 
-        // Get position of list item.
+        // Get object of list item.
         T t = mList.get(position);
 
         // Update titles of the view item.
-        holder.mText.setText(t.getText());
-        holder.mImage.setImageResource(t.getImageResource());
+        holder.mText.setText(t.getListItemHeading());
+        holder.mImage.setImageResource(t.getListItemImageResource());
 
-        return v;
+        return view;
     }
 
     private static class Holder {

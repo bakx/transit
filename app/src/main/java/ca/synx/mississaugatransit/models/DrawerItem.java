@@ -1,21 +1,21 @@
 package ca.synx.mississaugatransit.models;
 
-import ca.synx.mississaugatransit.interfaces.IListItem;
+import ca.synx.mississaugatransit.interfaces.IDrawerItem;
 
-public class ListItem implements IListItem {
+public class DrawerItem implements IDrawerItem {
     private String mText;
     private int mImageResource;
 
-    public ListItem(String text, int imageResource) {
+    public DrawerItem(String text, int imageResource) {
         this.mText = text;
         this.mImageResource = imageResource;
     }
 
-    public String getText() {
+    public String getDrawerItemText() {
         return mText;
     }
 
-    public int getImageResource() {
+    public int getDrawerItemImageResource() {
         return mImageResource;
     }
 }

@@ -1,7 +1,9 @@
 package ca.synx.mississaugatransit.interfaces;
 
 public interface IListItem {
-    String getText();
+    String getListItemHeading();
 
-    int getImageResource();
+    String getListItemSubject();
+
+    int getListItemImageResource();
 }
