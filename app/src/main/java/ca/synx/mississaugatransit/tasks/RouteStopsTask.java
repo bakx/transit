@@ -3,8 +3,6 @@ package ca.synx.mississaugatransit.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONException;
-
 import java.util.List;
 
 import ca.synx.mississaugatransit.handlers.StorageHandler;
@@ -13,7 +11,7 @@ import ca.synx.mississaugatransit.models.Stop;
 import ca.synx.mississaugatransit.util.GTFSDataExchange;
 import ca.synx.mississaugatransit.util.GTFSParser;
 
-public class RouteStopsTask extends AsyncTask<Route, Void, List<Stop>> {
+public class RouteStopsTask extends AsyncTask<Object, Void, List<Stop>> {
 
     private IRouteStopsTask mListener;
     private StorageHandler mStorageHandler;
@@ -24,28 +22,39 @@ public class RouteStopsTask extends AsyncTask<Route, Void, List<Stop>> {
     }
 
     @Override
-    protected List<Stop> doInBackground(Route... params) {
+    protected List<Stop> doInBackground(Object... params) {
 
-        Route route = params[0];
+        // Route data is [0]
+        Route route = (Route) params[0];
 
-        List<Stop> stops = mStorageHandler.getRouteStops(route);
+        // Route Date is [1]
+        String routeDate = (String) params[1];
+
+        //
+        // Cache check.
+        //
+
+        List<Stop> stops = mStorageHandler.getRouteStops(route, routeDate);
 
         // Check if items were found in cache.
         if (stops.size() > 0)
             return stops;
 
-
-        String data = (new GTFSDataExchange().getStopsData(route, ""));
-
-        if (data == null)
-            return null;
+        //
+        // Fetch data from web service.
+        //
 
         try {
+            // Fetch data from web service.
+            String data = (new GTFSDataExchange().getStopsData(route, routeDate));
+
+            // Process web service data.
             stops = GTFSParser.getStops(data);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Log.e("RouteStopsTask:doInBackground", "" + e.getMessage());
             e.printStackTrace();
+            return null;
         }
 
         for (Stop stop : stops)
@@ -53,7 +62,7 @@ public class RouteStopsTask extends AsyncTask<Route, Void, List<Stop>> {
 
 
         // Store items in cache.
-        mStorageHandler.saveRouteStops(stops);
+        mStorageHandler.saveRouteStops(stops, routeDate);
 
         return stops;
     }
@@ -62,12 +71,12 @@ public class RouteStopsTask extends AsyncTask<Route, Void, List<Stop>> {
     protected void onPostExecute(List<Stop> stops) {
         super.onPostExecute(stops);
 
-        mListener.onRoutesTaskComplete(
+        mListener.onRouteStopsTaskComplete(
                 stops
         );
     }
 
     public interface IRouteStopsTask {
-        void onRoutesTaskComplete(List<Stop> stops);
+        void onRouteStopsTaskComplete(List<Stop> stops);
     }
 }

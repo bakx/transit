@@ -23,4 +23,8 @@
     <string name="action_settings">Settings</string>
     <string name="next_stop_time">%1$s (%2$s min)</string>
 
+    <!-- Tag Object identifiers -->
+    <item name="object_iroute_ifilter" type="id"></item>
+    <item name="object_istop_ifilter" type="id"></item>
+
 </resources>

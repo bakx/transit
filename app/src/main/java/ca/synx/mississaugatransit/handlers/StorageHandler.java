@@ -16,7 +16,6 @@ import ca.synx.mississaugatransit.models.Favorite;
 import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.models.Stop;
 import ca.synx.mississaugatransit.models.StopTime;
-import ca.synx.mississaugatransit.util.GTFS;
 
 public final class StorageHandler {
 
@@ -106,7 +105,7 @@ public final class StorageHandler {
         }
     }
 
-    public List<Stop> getRouteStops(Route route) {
+    public List<Stop> getRouteStops(Route route, String routeDate) {
 
         List<Stop> list = new ArrayList<Stop>();
 
@@ -128,7 +127,7 @@ public final class StorageHandler {
                     new String[]{
                             route.getRouteNumber(),
                             route.getRouteHeading(),
-                            GTFS.getServiceTimeStamp()
+                            routeDate
                     }, null, null, null
             );
 
@@ -169,7 +168,7 @@ public final class StorageHandler {
         return list;
     }
 
-    public void saveRouteStops(List<Stop> stops) {
+    public void saveRouteStops(List<Stop> stops, String routeDate) {
 
         SQLiteDatabase db = this.mDatabaseHandler.getWritableDatabase();
 
@@ -184,7 +183,7 @@ public final class StorageHandler {
                 values.put(CacheRouteStopsTable.COLUMN_STOP_LAT, stop.getStopLat());
                 values.put(CacheRouteStopsTable.COLUMN_STOP_LNG, stop.getStopLng());
                 values.put(CacheRouteStopsTable.COLUMN_STOP_SEQUENCE, stop.getStopSequence());
-                values.put(CacheRouteStopsTable.COLUMN_SERVICE_DATE, GTFS.getServiceTimeStamp());
+                values.put(CacheRouteStopsTable.COLUMN_SERVICE_DATE, routeDate);
 
                 db.insert(CacheRouteStopsTable.TABLE_NAME, null, values);
             }

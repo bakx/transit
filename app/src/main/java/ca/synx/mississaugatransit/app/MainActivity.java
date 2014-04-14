@@ -15,15 +15,18 @@ import android.widget.TextView;
 
 import ca.synx.mississaugatransit.fragments.MapsFragment;
 import ca.synx.mississaugatransit.fragments.NavigationDrawerFragment;
-import ca.synx.mississaugatransit.fragments.RoutesFragment;
+import ca.synx.mississaugatransit.fragments.RoutesViewFlipperFragment;
 import ca.synx.mississaugatransit.handlers.DatabaseHandler;
+import ca.synx.mississaugatransit.models.Route;
+import ca.synx.mississaugatransit.models.Stop;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks {
 
     private DatabaseHandler mDatabaseHandler;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private RoutesViewFlipperFragment mRoutesViewFlipperFragment;
     private CharSequence mTitle;
 
     @Override
@@ -107,7 +110,9 @@ public class MainActivity extends ActionBarActivity
             case 1:
                 return PlaceholderFragment.newInstance(position);
             case 2:
-                return RoutesFragment.newInstance();
+                if (mRoutesViewFlipperFragment == null)
+                    mRoutesViewFlipperFragment = new RoutesViewFlipperFragment();
+                return mRoutesViewFlipperFragment;
             case 3:
                 return PlaceholderFragment.newInstance(position);
             case 4:
@@ -122,6 +127,16 @@ public class MainActivity extends ActionBarActivity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
+    }
+
+    @Override
+    public void onRouteSelected(Route route) {
+        mRoutesViewFlipperFragment.showNext();
+    }
+
+    @Override
+    public void onStopSelected(Stop stop) {
+        mRoutesViewFlipperFragment.showNext();
     }
 
     /**

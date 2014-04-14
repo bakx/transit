@@ -34,7 +34,7 @@ public class Favorite implements IListItem, Serializable {
 
     @Override
     public String getListItemHeading() {
-        return mStop.getRoute().getListItemHeading();
+        return mStop.getRoute().getRouteHeading();
     }
 
     @Override

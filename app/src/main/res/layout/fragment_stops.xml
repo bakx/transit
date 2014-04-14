@@ -1,23 +1,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/routeDateTextView"
+        android:id="@+id/routeStopNameTextView"
         style="@style/RouteDateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Loading...."
+        android:text="Stops"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ListView
-        android:id="@+id/routeListView"
+        android:id="@+id/routeStopListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/routeDateTextView"
+        android:layout_below="@id/routeStopNameTextView"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
-
 
 </RelativeLayout>

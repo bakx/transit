@@ -14,16 +14,16 @@ import java.util.List;
 
 import ca.synx.mississaugatransit.app.R;
 import ca.synx.mississaugatransit.interfaces.IFilter;
-import ca.synx.mississaugatransit.interfaces.IRoute;
+import ca.synx.mississaugatransit.interfaces.IStop;
 
-public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
+public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
     private Context mContext;
     private int mResourceId;
     private List<T> mList;
     private List<T> mFilteredList;
     private Filter mFilter;
 
-    public RouteAdapter(Context context, int resourceId, List<T> list) {
+    public StopAdapter(Context context, int resourceId, List<T> list) {
         super(context, resourceId, list);
 
         this.mContext = context;
@@ -58,9 +58,8 @@ public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(mResourceId, null);
 
-            viewHolder.numberTextView = (TextView) view.findViewById(R.id.numberTextView);
             viewHolder.nameTextView = (TextView) view.findViewById(R.id.nameTextView);
-            viewHolder.headingTextView = (TextView) view.findViewById(R.id.headingTextView);
+            viewHolder.idTextView = (TextView) view.findViewById(R.id.idTextView);
             viewHolder.nextImageView = (ImageView) view.findViewById(R.id.nextImageView);
 
             // Cache holder for performance reasons.
@@ -74,9 +73,8 @@ public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
         T t = getItem(position);
 
         // Update titles of the view item.
-        viewHolder.numberTextView.setText(t.getRouteNumber());
-        viewHolder.nameTextView.setText(t.getRouteName());
-        viewHolder.headingTextView.setText(t.getRouteHeading());
+        viewHolder.nameTextView.setText(t.getStopName());
+        viewHolder.idTextView.setText(t.getStopId());
         viewHolder.nextImageView.setImageResource(t.getListItemImageResource());
 
         // Attach object T to view.
@@ -86,9 +84,8 @@ public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
     }
 
     private static class ViewHolder {
-        public TextView numberTextView;
         public TextView nameTextView;
-        public TextView headingTextView;
+        public TextView idTextView;
         public ImageView nextImageView;
     }
 

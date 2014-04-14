@@ -3,11 +3,10 @@ package ca.synx.mississaugatransit.models;
 import java.io.Serializable;
 
 import ca.synx.mississaugatransit.interfaces.IFilter;
-import ca.synx.mississaugatransit.interfaces.IListItem;
 import ca.synx.mississaugatransit.interfaces.IRoute;
 import ca.synx.mississaugatransit.interfaces.ISpinnerItem;
 
-public class Route implements IRoute, IListItem, ISpinnerItem, IFilter, Serializable {
+public class Route implements IRoute, ISpinnerItem, IFilter, Serializable {
     private String mRouteNumber;
     private String mRouteName;
     private String mRouteHeading;
@@ -17,6 +16,8 @@ public class Route implements IRoute, IListItem, ISpinnerItem, IFilter, Serializ
         this.mRouteName = routeName;
         this.mRouteHeading = routeHeading;
     }
+
+    /* Implementation of interface IRoute */
 
     public String getRouteName() {
         return this.mRouteName;
@@ -30,19 +31,6 @@ public class Route implements IRoute, IListItem, ISpinnerItem, IFilter, Serializ
         return this.mRouteHeading;
     }
 
-    /* Implementation of interface IListItem */
-
-    @Override
-    public String getListItemHeading() {
-        return mRouteNumber + " " + mRouteName;
-    }
-
-    @Override
-    public String getListItemSubject() {
-        return mRouteHeading;
-    }
-
-    @Override
     public int getListItemImageResource() {
         return 0;
     }

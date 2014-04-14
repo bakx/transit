@@ -1,7 +1,6 @@
 package ca.synx.mississaugatransit.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,42 +13,34 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import ca.synx.mississaugatransit.adapters.RouteAdapter;
+import ca.synx.mississaugatransit.adapters.StopAdapter;
 import ca.synx.mississaugatransit.app.R;
 import ca.synx.mississaugatransit.models.Route;
-import ca.synx.mississaugatransit.tasks.RoutesTask;
+import ca.synx.mississaugatransit.models.Stop;
+import ca.synx.mississaugatransit.tasks.RouteStopsTask;
 import ca.synx.mississaugatransit.util.GTFS;
 
-public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, CalendarView.OnDateChangeListener, SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
+public class StopsFragment extends Fragment implements RouteStopsTask.IRouteStopsTask, SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
 
-    private static RoutesFragment mRoutesFragment;
+    private Route mRoute;
     private View mView;
 
     private ProgressDialog mProgressDialog;
-    private Dialog mCalendarDialog;
 
-    private RouteAdapter<Route> mRoutesAdapter;
-    private TextView mRouteDateTextView;
-    private ListView mRoutesListView;
+    private StopAdapter<Stop> mStopAdapter;
+    private TextView mRouteStopNameTextView;
+    private ListView mRouteStopListView;
     private String mRouteDate;
 
     private SearchView mSearchView;
     private MenuItem mSearchMenuItem;
 
     private RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks mRoutesViewFlipperFragmentCallbacks;
-
-    public static RoutesFragment newInstance() {
-        if (mRoutesFragment == null)
-            mRoutesFragment = new RoutesFragment();
-
-        return mRoutesFragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,15 +50,15 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
         mRouteDate = GTFS.getServiceTimeStamp();
 
         // Make sure options menu is shown in action bar.
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mView = inflater.inflate(R.layout.fragment_routes, container, false);
-        mRouteDateTextView = (TextView) mView.findViewById(R.id.routeDateTextView);
-        mRoutesListView = (ListView) mView.findViewById(R.id.routeListView);
+        mView = inflater.inflate(R.layout.fragment_stops, container, false);
+        mRouteStopNameTextView = (TextView) mView.findViewById(R.id.routeStopNameTextView);
+        mRouteStopListView = (ListView) mView.findViewById(R.id.routeStopListView);
 
         return mView;
     }
@@ -90,23 +81,6 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.action_calendar_time) {
-
-            if (mCalendarDialog != null)
-                mCalendarDialog.show();
-            else {
-                mCalendarDialog = new Dialog(getActivity());
-                mCalendarDialog.setContentView(R.layout.calendar_view);
-                mCalendarDialog.setTitle(getString(R.string.action_change_route_date));
-
-                CalendarView calendarView = (CalendarView) mCalendarDialog.findViewById(R.id.calendarView);
-                calendarView.setOnDateChangeListener(this);
-
-                mCalendarDialog.show();
-            }
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -114,7 +88,7 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        loadRouteData();
+        loadStopData();
     }
 
     @Override
@@ -129,35 +103,21 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
     }
 
     @Override
-    public void onSelectedDayChange(CalendarView calendarView, int year, int month, int day) {
-
-        // Update mRouteDate to contain the value of the selected date.
-        mRouteDate = String.valueOf(year) +
-                String.format("%02d", month + 1) +
-                String.format("%02d", day);
-
-        // Cancel out dialog.
-        mCalendarDialog.cancel();
-
-        // Load Routes.
-        loadRouteData();
-    }
-
-    @Override
     public boolean onQueryTextSubmit(String s) {
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String s) {
-        mRoutesAdapter.getFilter().filter(s);
+        mStopAdapter.getFilter().filter(s);
         return false;
     }
 
-    protected void loadRouteData() {
+    protected void loadStopData() {
 
         // Update text view that displays what date is being shown.
-        mRouteDateTextView.setText(
+        mRouteStopNameTextView.setText(
+
                 String.format(getString(R.string.action_displaying_routes),
                         mRouteDate.substring(4, 6) + "/" +
                                 mRouteDate.substring(6, 8) + "/" +
@@ -176,21 +136,21 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
         mProgressDialog.show();
         mProgressDialog.setCancelable(false);
 
-        new RoutesTask(this).execute(mRouteDate);
+        new RouteStopsTask(this).execute(mRoute, mRouteDate);
     }
 
     @Override
-    public void onRoutesTaskComplete(List<Route> routes) {
-        mRoutesAdapter = new RouteAdapter<Route>(getActivity().getApplicationContext(), R.layout.item_route, routes);
-        mRoutesListView.setAdapter(mRoutesAdapter);
-        mRoutesListView.setOnItemClickListener(this);
+    public void onRouteStopsTaskComplete(List<Stop> stops) {
+        mStopAdapter = new StopAdapter<Stop>(getActivity().getApplicationContext(), R.layout.item_stop, stops);
+        mRouteStopListView.setAdapter(mStopAdapter);
+        mRouteStopListView.setOnItemClickListener(this);
         mProgressDialog.cancel();
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        // Fetch object from view tag (Route does implement IRoute and IFilter).
-        Route route = (Route) view.getTag(R.id.object_iroute_ifilter);
-        mRoutesViewFlipperFragmentCallbacks.onRouteSelected(route);
+        // Fetch object from view tag (Route does implement IStop and IFilter).
+        Stop stop = (Stop) view.getTag(R.id.object_istop_ifilter);
+        mRoutesViewFlipperFragmentCallbacks.onStopSelected(stop);
     }
 }

@@ -3,9 +3,10 @@ package ca.synx.mississaugatransit.models;
 import java.io.Serializable;
 import java.util.List;
 
-import ca.synx.mississaugatransit.interfaces.IListItem;
+import ca.synx.mississaugatransit.interfaces.IFilter;
+import ca.synx.mississaugatransit.interfaces.IStop;
 
-public class Stop implements IListItem, Serializable {
+public class Stop implements IStop, IFilter, Serializable {
     private String mStopId;
     private String mStopName;
     private double mStopLat;
@@ -27,6 +28,8 @@ public class Stop implements IListItem, Serializable {
         return mStopId;
     }
 
+    /* Implementation of interface IStop */
+
     public String getStopName() {
         return mStopName;
     }
@@ -41,6 +44,10 @@ public class Stop implements IListItem, Serializable {
 
     public int getStopSequence() {
         return mStopSequence;
+    }
+
+    public int getListItemImageResource() {
+        return 0;
     }
 
     public List<StopTime> getStopTimes() {
@@ -59,20 +66,10 @@ public class Stop implements IListItem, Serializable {
         mRoute = route;
     }
 
-    /* Implementation of interface IListItem */
+    /* Implementation of interface IFilter */
 
     @Override
-    public String getListItemHeading() {
-        return mStopName;
-    }
-
-    @Override
-    public String getListItemSubject() {
-        return mStopId;
-    }
-
-    @Override
-    public int getListItemImageResource() {
-        return 0;
+    public String getFilterData() {
+        return this.mStopId + this.mStopName;
     }
 }
