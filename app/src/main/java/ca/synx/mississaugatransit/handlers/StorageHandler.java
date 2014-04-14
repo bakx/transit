@@ -20,13 +20,22 @@ import ca.synx.mississaugatransit.util.GTFS;
 
 public final class StorageHandler {
 
+    private static StorageHandler mStorageHandler;
     private DatabaseHandler mDatabaseHandler;
 
-    public StorageHandler(DatabaseHandler databaseHandler) {
-        this.mDatabaseHandler = databaseHandler;
+    public StorageHandler() {
+        this.mDatabaseHandler = DatabaseHandler.getInstance();
+        this.mStorageHandler = this;
     }
 
-    public List<Route> getRoutes() {
+    public static StorageHandler getInstance() {
+        if (mStorageHandler == null)
+            mStorageHandler = new StorageHandler();
+
+        return mStorageHandler;
+    }
+
+    public List<Route> getRoutes(String routeDate) {
 
         List<Route> list = new ArrayList<Route>();
 
@@ -42,7 +51,7 @@ public final class StorageHandler {
                     },
                     CacheRoutesTable.COLUMN_SERVICE_DATE + " = ? ",
                     new String[]{
-                            GTFS.getServiceTimeStamp()
+                            routeDate
                     }, null, null, null
             );
 
@@ -67,13 +76,14 @@ public final class StorageHandler {
         } finally {
             if (cursor != null && !cursor.isClosed())
                 cursor.close();
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
 
         return list;
     }
 
-    public void saveRoutes(List<Route> routes) {
+    public void saveRoutes(List<Route> routes, String routeDate) {
 
         SQLiteDatabase db = this.mDatabaseHandler.getWritableDatabase();
 
@@ -83,7 +93,7 @@ public final class StorageHandler {
                 values.put(CacheRoutesTable.COLUMN_ROUTE_NUMBER, route.getRouteNumber());
                 values.put(CacheRoutesTable.COLUMN_ROUTE_NAME, route.getRouteName());
                 values.put(CacheRoutesTable.COLUMN_ROUTE_HEADING, route.getRouteHeading());
-                values.put(CacheRoutesTable.COLUMN_SERVICE_DATE, GTFS.getServiceTimeStamp());
+                values.put(CacheRoutesTable.COLUMN_SERVICE_DATE, routeDate);
 
                 db.insert(CacheRoutesTable.TABLE_NAME, null, values);
             }
@@ -91,7 +101,8 @@ public final class StorageHandler {
             Log.e("StorageHandler:saveRoutes", "" + e.getMessage());
             e.printStackTrace();
         } finally {
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
     }
 
@@ -151,7 +162,8 @@ public final class StorageHandler {
             if (cursor != null && !cursor.isClosed())
                 cursor.close();
 
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
 
         return list;
@@ -180,7 +192,8 @@ public final class StorageHandler {
             Log.e("StorageHandler:saveRouteStops", "" + e.getMessage());
             e.printStackTrace();
         } finally {
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
     }
 
@@ -222,7 +235,8 @@ public final class StorageHandler {
             if (cursor != null && !cursor.isClosed())
                 cursor.close();
 
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
 
         return list;
@@ -248,7 +262,8 @@ public final class StorageHandler {
             Log.e("StorageHandler:saveStops", "" + e.getMessage());
             e.printStackTrace();
         } finally {
-            db.close();
+                    if (db != null && db.isOpen())
+                db.close();
         }
 
         */
@@ -297,7 +312,8 @@ public final class StorageHandler {
             if (cursor != null && !cursor.isClosed())
                 cursor.close();
 
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
 
         return list;
@@ -322,7 +338,8 @@ public final class StorageHandler {
             Log.e("StorageHandler:saveStopTimes", "" + e.getMessage());
             e.printStackTrace();
         } finally {
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
     }
 
@@ -370,7 +387,8 @@ public final class StorageHandler {
         } finally {
             if (cursor != null && !cursor.isClosed())
                 cursor.close();
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
 
         return list;
@@ -397,7 +415,8 @@ public final class StorageHandler {
             Log.e("StorageHandler:saveFavorite", "" + e.getMessage());
             e.printStackTrace();
         } finally {
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
     }
 
@@ -412,7 +431,8 @@ public final class StorageHandler {
             Log.e("StorageHandler:removeFavorite", "" + e.getMessage());
             e.printStackTrace();
         } finally {
-            db.close();
+            if (db != null && db.isOpen())
+                db.close();
         }
     }
 
@@ -458,7 +478,9 @@ public final class StorageHandler {
         } finally {
             if (cursor != null && !cursor.isClosed())
                 cursor.close();
-            db.close();
+
+            if (db != null && db.isOpen())
+                db.close();
         }
 
         return false;

@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -17,22 +18,23 @@ import ca.synx.mississaugatransit.models.Stop;
 public class GTFSDataExchange {
 
     private static String GTFS_BASE_URL = "http://gtfs.dataservices.synx.ca/api/GTFS/";
+    private static String GET_FEED_INFO = "GetFeedInfo";
     private static String GET_ROUTES_URL = "GetRoutes/%s";
     private static String GET_STOPS_URL = "GetStops";
     private static String GET_STOPS_ROUTE_URL = "GetStops/%s/%s/%s";
     private static String GET_STOP_TIMES_URL = "GetStopTimes/%s/%s/%s/%s";
 
-    public GTFSDataExchange() {
-    }
+    private String getData(String dataURL) throws IOException {
 
-    private String getData(String dataURL) {
-
-        HttpClient client;
+        HttpClient client = null;
+        InputStream is = null;
+        String data = "";
 
         try {
+
             client = new DefaultHttpClient();
             HttpResponse response = client.execute(new HttpGet(dataURL));
-            InputStream is = response.getEntity().getContent();
+            is = response.getEntity().getContent();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(is), 8);
             StringBuilder sb = new StringBuilder();
@@ -42,46 +44,91 @@ public class GTFSDataExchange {
             }
             is.close();
 
-            return sb.toString();
+            data = sb.toString();
         } catch (Exception e) {
             Log.e("GTFSDataExchange:getData", "" + e.getMessage());
             e.printStackTrace();
-            return null;
+        } finally {
+            if (is != null) {
+                is.close();
+            }
         }
+
+        return data;
     }
 
-    public String getRouteData() {
-        return getData(
-                String.format(GTFS_BASE_URL + GET_ROUTES_URL,
-                        GTFS.getServiceTimeStamp()
-                )
-        );
+    public String getRouteData(String routeDate) {
+        String data = "";
+
+        try {
+            data = getData(
+                    String.format(GTFS_BASE_URL + GET_ROUTES_URL,
+                            routeDate
+                    )
+            );
+
+        } catch (IOException e) {
+            Log.e("GTFSDataExchange:getRouteData", "" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
-    public String getStopsData() {
-        return getData(
-                String.format(GTFS_BASE_URL + GET_STOPS_URL)
-        );
+    public String getStopsData(String routeDate) {
+        String data = "";
+
+        try {
+            data = getData(
+                    String.format(GTFS_BASE_URL + GET_STOPS_URL)
+            );
+
+        } catch (IOException e) {
+            Log.e("GTFSDataExchange:getStopsData", "" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
-    public String getStopsData(Route route) {
-        return getData(
-                String.format(GTFS_BASE_URL + GET_STOPS_ROUTE_URL,
-                        route.getRouteNumber(),
-                        route.getRouteHeading(),
-                        GTFS.getServiceTimeStamp()
-                )
-        );
+    public String getStopsData(Route route, String routeDate) {
+        String data = "";
+
+        try {
+            data = getData(
+                    String.format(GTFS_BASE_URL + GET_STOPS_ROUTE_URL,
+                            route.getRouteNumber(),
+                            route.getRouteHeading(),
+                            routeDate
+                    )
+            );
+
+        } catch (IOException e) {
+            Log.e("GTFSDataExchange:getStopsData", "" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
-    public String getStopTimesData(Stop stop) {
-        return getData(
-                String.format(GTFS_BASE_URL + GET_STOP_TIMES_URL,
-                        stop.getRoute().getRouteNumber(),
-                        stop.getRoute().getRouteHeading(),
-                        stop.getStopId(),
-                        GTFS.getServiceTimeStamp()
-                )
-        );
+    public String getStopTimesData(Stop stop, String routeDate) {
+        String data = "";
+
+        try {
+            data = getData(
+                    String.format(GTFS_BASE_URL + GET_STOP_TIMES_URL,
+                            stop.getRoute().getRouteNumber(),
+                            stop.getRoute().getRouteHeading(),
+                            stop.getStopId(),
+                            routeDate
+                    )
+            );
+
+        } catch (IOException e) {
+            Log.e("GTFSDataExchange:getStopTimesData", "" + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return data;
     }
 }

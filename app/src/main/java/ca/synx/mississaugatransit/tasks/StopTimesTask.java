@@ -1,6 +1,5 @@
 package ca.synx.mississaugatransit.tasks;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,14 +17,12 @@ import ca.synx.mississaugatransit.util.GTFSParser;
 
 public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
 
-    private Context mContext;
     private IStopTimesTask mListener;
     private StorageHandler mStorageHandler;
 
-    public StopTimesTask(Context context, IStopTimesTask listener, StorageHandler storageHandler) {
-        this.mContext = context;
+    public StopTimesTask(IStopTimesTask listener) {
         this.mListener = listener;
-        this.mStorageHandler = storageHandler;
+        this.mStorageHandler = StorageHandler.getInstance();
     }
 
     @Override
@@ -41,7 +38,7 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
 
         stopTimes = new ArrayList<StopTime>();
 
-        String data = (new GTFSDataExchange().getStopTimesData(stop));
+        String data = (new GTFSDataExchange().getStopTimesData(stop, ""));
 
         if (data == null)
             return null;

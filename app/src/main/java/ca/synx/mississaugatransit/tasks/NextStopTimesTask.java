@@ -34,7 +34,7 @@ public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<Stop
         // Prepare the current time.
         //
 
-        long currentTime = 0;
+        long currentTime;
 
         try {
             currentTime = new SimpleDateFormat("hh:mm a").parse(
@@ -57,11 +57,9 @@ public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<Stop
 
         boolean reachedPM = false;   // Keep track of stopping times after midnight.
 
-        for (int i = 0; i < stopTimes.size(); i++) {
+        for (StopTime stopTime : stopTimes) {
 
             try {
-                StopTime stopTime = stopTimes.get(i);
-
                 Date stopDate = new SimpleDateFormat("hh:mm a").parse(
                         stopTime.getDepartureTime()
                 );
@@ -95,7 +93,7 @@ public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<Stop
                 StopTime nearStopTime = new StopTime(
                         stopTime.getArrivalTime(),
                         String.format(
-                                mContext.getString(R.string.next_stoptime),
+                                mContext.getString(R.string.next_stop_time),
                                 stopTime.getDepartureTime(),
                                 String.valueOf(timeDifference)
                         )

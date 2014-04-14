@@ -17,9 +17,9 @@ public class StopsTask extends AsyncTask<Void, Void, List<Stop>> {
     private IStopsTask mListener;
     private StorageHandler mStorageHandler;
 
-    public StopsTask(IStopsTask stopsTaskListener, StorageHandler storageHandler) {
+    public StopsTask(IStopsTask stopsTaskListener) {
         this.mListener = stopsTaskListener;
-        this.mStorageHandler = storageHandler;
+        this.mStorageHandler = StorageHandler.getInstance();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class StopsTask extends AsyncTask<Void, Void, List<Stop>> {
         if (stops.size() > 0)
             return stops;
 
-        String data = (new GTFSDataExchange().getStopsData());
+        String data = (new GTFSDataExchange().getStopsData(""));
 
         if (data == null)
             return null;

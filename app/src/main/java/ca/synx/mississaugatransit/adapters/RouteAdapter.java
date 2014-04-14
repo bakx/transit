@@ -5,18 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.synx.mississaugatransit.app.R;
-import ca.synx.mississaugatransit.models.Route;
+import ca.synx.mississaugatransit.interfaces.IFilter;
+import ca.synx.mississaugatransit.interfaces.IRoute;
 
-public class RouteAdapter<T extends Route> extends ArrayAdapter<T> {
+public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
     private Context mContext;
     private int mResourceId;
     private List<T> mList;
+    private List<T> mFilteredList;
+    private Filter mFilter;
 
     public RouteAdapter(Context context, int resourceId, List<T> list) {
         super(context, resourceId, list);
@@ -24,6 +29,24 @@ public class RouteAdapter<T extends Route> extends ArrayAdapter<T> {
         this.mContext = context;
         this.mResourceId = resourceId;
         this.mList = list;
+        this.mFilteredList = list;
+    }
+
+    public Filter getFilter() {
+        if (mFilter == null)
+            mFilter = new RouteFilter();
+
+        return mFilter;
+    }
+
+    @Override
+    public int getCount() {
+        return mFilteredList.size();
+    }
+
+    @Override
+    public T getItem(int position) {
+        return mFilteredList.get(position);
     }
 
     @Override
@@ -48,13 +71,15 @@ public class RouteAdapter<T extends Route> extends ArrayAdapter<T> {
         }
 
         // Get object of list item.
-        T t = mList.get(position);
+        T t = getItem(position);
 
-        // Update titles of the view item.
-        viewHolder.numberTextView.setText(t.getRouteNumber());
-        viewHolder.nameTextView.setText(t.getRouteName());
-        viewHolder.headingTextView.setText(t.getRouteHeading());
-        viewHolder.nextImageView.setImageResource(t.getListItemImageResource());
+        if (t != null) {
+            // Update titles of the view item.
+            viewHolder.numberTextView.setText(t.getRouteNumber());
+            viewHolder.nameTextView.setText(t.getRouteName());
+            viewHolder.headingTextView.setText(t.getRouteHeading());
+            viewHolder.nextImageView.setImageResource(t.getListItemImageResource());
+        }
 
         return view;
     }
@@ -64,5 +89,41 @@ public class RouteAdapter<T extends Route> extends ArrayAdapter<T> {
         public TextView nameTextView;
         public TextView headingTextView;
         public ImageView nextImageView;
+    }
+
+    private class RouteFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+
+            FilterResults filterResults = new FilterResults();
+
+            if (charSequence == null || charSequence.length() == 0) {
+                filterResults.values = mList;
+                filterResults.count = mList.size();
+            } else {
+                List<T> filteredList = new ArrayList<T>();
+
+                for (T t : mList) {
+                    if (t.getFilterData().toUpperCase()
+                            .contains(charSequence.toString().toUpperCase())
+                            ) {
+
+                        filteredList.add(t);
+                    }
+                }
+
+                filterResults.values = filteredList;
+                filterResults.count = filteredList.size();
+            }
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            mFilteredList = (ArrayList<T>) filterResults.values;
+            notifyDataSetChanged();
+        }
     }
 }

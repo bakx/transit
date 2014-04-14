@@ -14,9 +14,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "transit.db";
+    private static DatabaseHandler mDatabaseHandler;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.mDatabaseHandler = this;
+    }
+
+    public static DatabaseHandler getInstance() {
+        if (mDatabaseHandler == null)
+            throw new IllegalArgumentException("DatabaseHandler class not initialized!");
+
+        return mDatabaseHandler;
     }
 
     public void onCreate(SQLiteDatabase db) {

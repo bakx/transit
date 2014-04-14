@@ -33,17 +33,24 @@
     </style>
 
     <!-- Route Item -->
+    <style name="RouteDateTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#F26222</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
     <style name="ItemRouteNumberTextView">
-        <item name="android:textColor">#000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff2e2e2e</item>
     </style>
 
     <style name="ItemRouteNameTextView">
-        <item name="android:textColor">#000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff2e2e2e</item>
     </style>
 
     <style name="ItemRouteHeadingTextView">
-        <item name="android:textColor">#000</item>
+        <item name="android:textColor">#ff484848</item>
     </style>
-
 
 </resources>

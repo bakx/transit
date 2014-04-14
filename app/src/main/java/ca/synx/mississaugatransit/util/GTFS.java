@@ -7,5 +7,4 @@ public final class GTFS {
     public static String getServiceTimeStamp() {
         return new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime());
     }
-
 }

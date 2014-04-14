@@ -18,9 +18,9 @@ public class RouteStopsTask extends AsyncTask<Route, Void, List<Stop>> {
     private IRouteStopsTask mListener;
     private StorageHandler mStorageHandler;
 
-    public RouteStopsTask(IRouteStopsTask routeStopsTask, StorageHandler storageHandler) {
+    public RouteStopsTask(IRouteStopsTask routeStopsTask) {
         this.mListener = routeStopsTask;
-        this.mStorageHandler = storageHandler;
+        this.mStorageHandler = StorageHandler.getInstance();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class RouteStopsTask extends AsyncTask<Route, Void, List<Stop>> {
             return stops;
 
 
-        String data = (new GTFSDataExchange().getStopsData(route));
+        String data = (new GTFSDataExchange().getStopsData(route, ""));
 
         if (data == null)
             return null;

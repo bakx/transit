@@ -6,17 +6,15 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.synx.mississaugatransit.handlers.DatabaseHandler;
 import ca.synx.mississaugatransit.handlers.StorageHandler;
 import ca.synx.mississaugatransit.models.Favorite;
 
 public class FavoritesTask extends AsyncTask<String, Void, List<Favorite>> {
 
-    private DatabaseHandler mDatabaseHandler;
+    private StorageHandler mStorageHandler = StorageHandler.getInstance();
     private IFavoritesTask mListener;
 
-    public FavoritesTask(DatabaseHandler databaseHandler, IFavoritesTask favoriteListener) {
-        this.mDatabaseHandler = databaseHandler;
+    public FavoritesTask(IFavoritesTask favoriteListener) {
         this.mListener = favoriteListener;
     }
 
@@ -26,7 +24,7 @@ public class FavoritesTask extends AsyncTask<String, Void, List<Favorite>> {
         List<Favorite> favorites = new ArrayList<Favorite>();
 
         try {
-            favorites = new StorageHandler(mDatabaseHandler).getFavorites();
+            favorites = mStorageHandler.getFavorites();
         } catch (Exception e) {
             Log.e("FavoritesTask:doInBackground", "" + e.getMessage());
             e.printStackTrace();

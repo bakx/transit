@@ -18,28 +18,37 @@ public class RoutesTask extends AsyncTask<String, Void, List<Route>> {
     private IRoutesTask mListener;
     private StorageHandler mStorageHandler;
 
-    public RoutesTask(IRoutesTask listener, StorageHandler storageHandler) {
+    public RoutesTask(IRoutesTask listener) {
         this.mListener = listener;
-        this.mStorageHandler = storageHandler;
+        this.mStorageHandler = StorageHandler.getInstance();
     }
 
     @Override
     protected List<Route> doInBackground(String... params) {
-        //List<Route> routes = mStorageHandler.getRoutes();
 
-        // Check if items were found in cache.
-        //if (routes.size() > 0)
-        //    return routes;
+        // Get selected route date from params.
+        String routeDate = params[0];
 
-        List<Route> routes = new ArrayList<Route>();
+        //
+        // Cache check.
+        //
 
+        List<Route> routes = mStorageHandler.getRoutes(routeDate);
+
+        if (routes.size() > 0)
+            return routes;
+
+        //
         // Fetch data from web service.
-        String data = (new GTFSDataExchange().getRouteData());
+        //
 
-        if (data == null)
-            return null;
+        routes = new ArrayList<Route>();
 
         try {
+            // Fetch data from web service.
+            String data = (new GTFSDataExchange().getRouteData(routeDate));
+
+            // Process web service data.
             routes = GTFSParser.getRoutes(data);
 
         } catch (JSONException e) {
@@ -48,7 +57,7 @@ public class RoutesTask extends AsyncTask<String, Void, List<Route>> {
         }
 
         // Store items in cache.
-        //mStorageHandler.saveRoutes(routes);
+        mStorageHandler.saveRoutes(routes, routeDate);
 
         return routes;
     }

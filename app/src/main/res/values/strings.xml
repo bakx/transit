@@ -9,14 +9,18 @@
     <string name="title_stops">Stops</string>
     <string name="title_map">Map</string>
 
-    <!--  -->
+    <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Calendar Time Actions -->
+    <string name="action_change_route_date">Change route date</string>
+    <string name="action_loading_routes">Loading routes %1$s</string>
+    <string name="action_displaying_routes">Displaying routes %1$s</string>
+
     <!-- Actions -->
-    <string name="action_example">Example action</string>
+    <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="next_stoptime">%1$s (%2$s min)</string>
+    <string name="next_stop_time">%1$s (%2$s min)</string>
 
 </resources>

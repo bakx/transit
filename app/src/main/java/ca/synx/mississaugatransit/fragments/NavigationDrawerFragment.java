@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +105,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         List<DrawerItem> navigationItems = new ArrayList<DrawerItem>();
         navigationItems.add(new DrawerItem(getString(R.string.title_favorites), R.drawable.ic_action_important));
-        navigationItems.add(new DrawerItem(getString(R.string.title_routes), R.drawable.ic_action_event));
+        navigationItems.add(new DrawerItem(getString(R.string.title_routes), R.drawable.ic_action_route));
         navigationItems.add(new DrawerItem(getString(R.string.title_stops), R.drawable.ic_bus_stop));
         navigationItems.add(new DrawerItem(getString(R.string.title_map), R.drawable.ic_action_map));
 
@@ -117,7 +116,6 @@ public class NavigationDrawerFragment extends Fragment {
                         navigationItems
                 )
         );
-
 
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -260,10 +258,12 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
+        /*
         if (item.getItemId() == R.id.action_example) {
             Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
+        */
 
         return super.onOptionsItemSelected(item);
     }
