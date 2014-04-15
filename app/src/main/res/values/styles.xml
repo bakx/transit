@@ -53,4 +53,26 @@
         <item name="android:textColor">#ff484848</item>
     </style>
 
+    <!-- Stop Item -->
+    <style name="RouteStopHeader">
+        <item name="android:background">#F26222</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="RouteStopNameTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="ItemStopNameTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff2e2e2e</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="ItemStopIdTextView">
+        <item name="android:textColor">#ff2e2e2e</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
 </resources>

@@ -30,11 +30,14 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
         this.mResourceId = resourceId;
         this.mList = list;
         this.mFilteredList = list;
+
+        if (list == null)
+            throw new ExceptionInInitializerError("StopAdapter:StopAdapter - List<T> cannot be null");
     }
 
     public Filter getFilter() {
         if (mFilter == null)
-            mFilter = new RouteFilter();
+            mFilter = new StopFilter();
 
         return mFilter;
     }
@@ -89,7 +92,7 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
         public ImageView nextImageView;
     }
 
-    private class RouteFilter extends Filter {
+    private class StopFilter extends Filter {
 
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {

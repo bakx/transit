@@ -15,8 +15,14 @@
 
     <!-- Calendar Time Actions -->
     <string name="action_change_route_date">Change route date</string>
+
+    <!-- Route Feedback -->
     <string name="action_loading_routes">Loading routes %1$s</string>
-    <string name="action_displaying_routes">Displaying routes %1$s</string>
+    <string name="action_displaying_routes">Routes on %1$s</string>
+
+    <!-- Stops Feedback -->
+    <string name="action_loading_stops">Loading stops for:\nRoute %1$s\non %2$s</string>
+    <string name="action_displaying_stops">%1$s (%2$s)\non %3$s</string>
 
     <!-- Actions -->
     <string name="action_search">Search</string>
@@ -26,5 +32,8 @@
     <!-- Tag Object identifiers -->
     <item name="object_iroute_ifilter" type="id"></item>
     <item name="object_istop_ifilter" type="id"></item>
+
+    <item name="object_route_fragment" type="id"></item>
+    <item name="object_stop_fragment" type="id"></item>
 
 </resources>

@@ -22,13 +22,13 @@ import java.util.List;
 
 import ca.synx.mississaugatransit.adapters.RouteAdapter;
 import ca.synx.mississaugatransit.app.R;
+import ca.synx.mississaugatransit.interfaces.IFragment;
 import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.tasks.RoutesTask;
 import ca.synx.mississaugatransit.util.GTFS;
 
-public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, CalendarView.OnDateChangeListener, SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
+public class RoutesFragment extends Fragment implements IFragment, RoutesTask.IRoutesTask, CalendarView.OnDateChangeListener, SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
 
-    private static RoutesFragment mRoutesFragment;
     private View mView;
 
     private ProgressDialog mProgressDialog;
@@ -41,15 +41,9 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
 
     private SearchView mSearchView;
     private MenuItem mSearchMenuItem;
+    private MenuItem mCalendarMenuItem;
 
-    private RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks mRoutesViewFlipperFragmentCallbacks;
-
-    public static RoutesFragment newInstance() {
-        if (mRoutesFragment == null)
-            mRoutesFragment = new RoutesFragment();
-
-        return mRoutesFragment;
-    }
+    private RoutesViewFlipperFragment.IRoutesViewFlipperFragment mRoutesViewFlipperFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,10 +67,16 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.routes, menu);
+    }
+
+    @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
-        mSearchMenuItem = menu.findItem(R.id.action_search);
+        mSearchMenuItem = menu.findItem(R.id.action_routes_search);
+        mCalendarMenuItem = menu.findItem(R.id.action_routes_calendar_time);
 
         // Set up search.
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
@@ -84,14 +84,9 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.routes, menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.action_calendar_time) {
+        if (item.getItemId() == R.id.action_routes_calendar_time) {
 
             if (mCalendarDialog != null)
                 mCalendarDialog.show();
@@ -120,11 +115,11 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (activity instanceof RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks) {
-            mRoutesViewFlipperFragmentCallbacks = (RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks) activity;
+        if (activity instanceof RoutesViewFlipperFragment.IRoutesViewFlipperFragment) {
+            mRoutesViewFlipperFragment = (RoutesViewFlipperFragment.IRoutesViewFlipperFragment) activity;
         } else {
             throw new ClassCastException(activity.toString()
-                    + " must implement RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks");
+                    + " must implement RoutesViewFlipperFragment.IRoutesViewFlipperFragment");
         }
     }
 
@@ -191,6 +186,26 @@ public class RoutesFragment extends Fragment implements RoutesTask.IRoutesTask, 
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         // Fetch object from view tag (Route does implement IRoute and IFilter).
         Route route = (Route) view.getTag(R.id.object_iroute_ifilter);
-        mRoutesViewFlipperFragmentCallbacks.onRouteSelected(route);
+        mRoutesViewFlipperFragment.onRouteSelected(route, mRouteDate);
+    }
+
+    @Override
+    public void fragmentLoaded(Object... params) {
+    }
+
+    @Override
+    public void fragmentHideMenu() {
+        mSearchMenuItem.setVisible(false);
+        mCalendarMenuItem.setVisible(false);
+        mSearchView.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void fragmentShowMenu() {
+        mSearchMenuItem.setVisible(true);
+        mCalendarMenuItem.setVisible(true);
+        mSearchView.setVisibility(0);
+
     }
 }

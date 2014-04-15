@@ -21,7 +21,7 @@ import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.models.Stop;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, RoutesViewFlipperFragment.IRoutesViewFlipperFragmentCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, RoutesViewFlipperFragment.IRoutesViewFlipperFragment {
 
     private DatabaseHandler mDatabaseHandler;
 
@@ -112,6 +112,7 @@ public class MainActivity extends ActionBarActivity
             case 2:
                 if (mRoutesViewFlipperFragment == null)
                     mRoutesViewFlipperFragment = new RoutesViewFlipperFragment();
+
                 return mRoutesViewFlipperFragment;
             case 3:
                 return PlaceholderFragment.newInstance(position);
@@ -130,13 +131,22 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onRouteSelected(Route route) {
-        mRoutesViewFlipperFragment.showNext();
+    public void navigateBack() {
+        mRoutesViewFlipperFragment.showPrevious();
     }
 
     @Override
-    public void onStopSelected(Stop stop) {
-        mRoutesViewFlipperFragment.showNext();
+    public void navigateForward() {
+    }
+
+    @Override
+    public void onRouteSelected(Route route, String routeDate) {
+        mRoutesViewFlipperFragment.showNext(route, routeDate);
+    }
+
+    @Override
+    public void onStopSelected(Route route, Stop stop, String routeDate) {
+        mRoutesViewFlipperFragment.showNext(null, null);
     }
 
     /**

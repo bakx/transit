@@ -44,7 +44,6 @@ public class StopsTask extends AsyncTask<Void, Void, List<Stop>> {
             e.printStackTrace();
         }
 
-
         // Store items in cache.
         mStorageHandler.saveStops(stops);
 
@@ -63,5 +62,4 @@ public class StopsTask extends AsyncTask<Void, Void, List<Stop>> {
     public interface IStopsTask {
         void onStopsTaskComplete(List<Stop> stops);
     }
-
 }

@@ -2,20 +2,40 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/routeStopNameTextView"
-        style="@style/RouteDateTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Stops"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <RelativeLayout
+        android:id="@+id/routeStopHeader"
+        style="@style/RouteStopHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/previousImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/ic_action_previous_item" />
+
+        <TextView
+            android:id="@+id/routeStopNameTextView"
+            style="@style/RouteStopNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Stops"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+
+            />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/routeStopListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/routeStopNameTextView"
+        android:layout_below="@id/routeStopHeader"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
