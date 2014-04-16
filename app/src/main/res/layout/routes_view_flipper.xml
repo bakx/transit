@@ -1,20 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/routesViewFlipper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <ViewFlipper
-        android:id="@+id/routesViewFlipper"
+        android:id="@+id/routesViewFlipperViewFlipper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
         <fragment
-            android:id="@+id/routeFragment"
+            android:id="@+id/routesViewFlipperRouteFragment"
             class="ca.synx.mississaugatransit.fragments.RoutesFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
         <fragment
-            android:id="@+id/stopFragment"
+            android:id="@+id/routesViewFlipperStopFragment"
             class="ca.synx.mississaugatransit.fragments.StopsFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

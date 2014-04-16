@@ -33,6 +33,7 @@
     <item name="object_iroute_ifilter" type="id"></item>
     <item name="object_istop_ifilter" type="id"></item>
 
+    <item name="object_route_view_flipper_fragment" type="id"></item>
     <item name="object_route_fragment" type="id"></item>
     <item name="object_stop_fragment" type="id"></item>
 

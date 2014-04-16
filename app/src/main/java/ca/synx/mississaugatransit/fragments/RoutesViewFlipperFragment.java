@@ -14,14 +14,13 @@ import ca.synx.mississaugatransit.models.Stop;
 
 public class RoutesViewFlipperFragment extends Fragment implements Animation.AnimationListener {
 
+    private static View mView;
     private Route mRoute;
     private String mRouteDate;
 
-    private View mView;
     private ViewFlipper mViewFlipper;
-
-    private RoutesFragment mRouteFragment;
-    private StopsFragment mStopFragment;
+    private RoutesFragment mRoutesFragment;
+    private StopsFragment mStopsFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,22 +29,22 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        mView = inflater.inflate(R.layout.routes_view_flipper, container, false);
-        mViewFlipper = (ViewFlipper) mView.findViewById(R.id.routesViewFlipper);
-
-        mRouteFragment = (RoutesFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routeFragment);
-        mStopFragment = (StopsFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.stopFragment);
+        if (mView != null && mView.getParent() != null) {
+            ((ViewGroup) mView.getParent()).removeView(mView);
+        } else {
+            mView = inflater.inflate(R.layout.routes_view_flipper, container, false);
+        }
 
         return mView;
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
 
-        getActivity().getSupportFragmentManager().beginTransaction().remove(mRouteFragment).commit();
-        getActivity().getSupportFragmentManager().beginTransaction().remove(mStopFragment).commit();
+        mViewFlipper = (ViewFlipper) mView.findViewById(R.id.routesViewFlipperViewFlipper);
+        mRoutesFragment = (RoutesFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperRouteFragment);
+        mStopsFragment = (StopsFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperStopFragment);
     }
 
     public void showPrevious() {
@@ -67,7 +66,6 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
         //
         mViewFlipper.getOutAnimation().setAnimationListener(this);
 
-
         // Assign local variables for use in the animation end listeners.
         mRoute = route;
         mRouteDate = routeDate;
@@ -76,27 +74,26 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
         updateActionBar();
     }
 
-
     public void updateActionBar() {
 
         switch (mViewFlipper.getCurrentView().getId()) {
-            case R.id.routeFragment:
+            case R.id.routesViewFlipperRouteFragment:
 
                 // Update title.
                 getActivity().getActionBar().setTitle(getString(R.string.title_routes));
 
-                mRouteFragment.fragmentShowMenu();
-                mStopFragment.fragmentHideMenu();
+                mRoutesFragment.fragmentShowMenu();
+                mStopsFragment.fragmentHideMenu();
 
                 break;
 
-            case R.id.stopFragment:
+            case R.id.routesViewFlipperStopFragment:
 
                 // Update title.
                 getActivity().getActionBar().setTitle(getString(R.string.title_stops));
 
-                mRouteFragment.fragmentHideMenu();
-                mStopFragment.fragmentShowMenu();
+                mRoutesFragment.fragmentHideMenu();
+                mStopsFragment.fragmentShowMenu();
 
                 break;
         }
@@ -111,12 +108,12 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
     public void onAnimationEnd(Animation animation) {
 
         switch (mViewFlipper.getCurrentView().getId()) {
-            case R.id.routeFragment:
-                mRouteFragment.fragmentLoaded();
+            case R.id.routesViewFlipperRouteFragment:
+                mRoutesFragment.fragmentLoaded();
                 break;
 
-            case R.id.stopFragment:
-                mStopFragment.fragmentLoaded(mRoute, mRouteDate);
+            case R.id.routesViewFlipperStopFragment:
+                mStopsFragment.fragmentLoaded(mRoute, mRouteDate);
                 break;
         }
     }
