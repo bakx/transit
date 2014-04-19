@@ -15,6 +15,8 @@ import java.util.List;
 import ca.synx.mississaugatransit.app.R;
 import ca.synx.mississaugatransit.interfaces.IFilter;
 import ca.synx.mississaugatransit.interfaces.IStop;
+import ca.synx.mississaugatransit.util.GTFS;
+import ca.synx.mississaugatransit.util.Theme;
 
 public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
     private Context mContext;
@@ -64,6 +66,7 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
             viewHolder.nameTextView = (TextView) view.findViewById(R.id.nameTextView);
             viewHolder.idTextView = (TextView) view.findViewById(R.id.idTextView);
             viewHolder.nextImageView = (ImageView) view.findViewById(R.id.nextImageView);
+            viewHolder.locationTypeImageView = (ImageView) view.findViewById(R.id.locationTypeImageView);
 
             // Cache holder for performance reasons.
             view.setTag(viewHolder);
@@ -78,6 +81,7 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
         // Update titles of the view item.
         viewHolder.nameTextView.setText(t.getStopName());
         viewHolder.idTextView.setText(t.getStopId());
+        viewHolder.locationTypeImageView.setImageResource(GTFS.getLocationTypeImage(t.getLocationType(), Theme.IconType.DARK));
         viewHolder.nextImageView.setImageResource(t.getListItemImageResource());
 
         // Attach object T to view.
@@ -89,6 +93,7 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
     private static class ViewHolder {
         public TextView nameTextView;
         public TextView idTextView;
+        public ImageView locationTypeImageView;
         public ImageView nextImageView;
     }
 
@@ -123,7 +128,7 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mFilteredList = (ArrayList<T>) filterResults.values;
+            mFilteredList = (List<T>) filterResults.values;
             notifyDataSetChanged();
         }
     }

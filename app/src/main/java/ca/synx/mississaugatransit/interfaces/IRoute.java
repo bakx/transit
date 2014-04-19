@@ -1,9 +1,19 @@
 package ca.synx.mississaugatransit.interfaces;
 
 public interface IRoute {
-    String getRouteNumber();
+    int getRouteId();
 
-    String getRouteName();
+    String getAgencyId();
+
+    String getRouteShortName();
+
+    String getRouteLongName();
+
+    int getRouteType();
+
+    String getRouteColor();
+
+    String getRouteTextColor();
 
     String getRouteHeading();
 

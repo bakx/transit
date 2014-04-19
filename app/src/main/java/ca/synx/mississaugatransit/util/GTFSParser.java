@@ -26,8 +26,14 @@ public class GTFSParser {
             try {
                 routes.add(
                         new Route(
-                                jsonObject.getString("RouteNumber"),
-                                jsonObject.getString("RouteName"),
+                                0,
+                                jsonObject.getInt("RouteId"),
+                                jsonObject.getString("AgencyId"),
+                                jsonObject.getString("RouteShortName"),
+                                jsonObject.getString("RouteLongName"),
+                                jsonObject.getInt("RouteType"),
+                                jsonObject.getString("RouteColor"),
+                                jsonObject.getString("RouteTextColor"),
                                 jsonObject.getString("RouteHeading")
                         )
                 );
@@ -51,9 +57,15 @@ public class GTFSParser {
                 stops.add(
                         new Stop(
                                 jsonObject.getString("StopId"),
+                                jsonObject.getString("StopCode"),
                                 jsonObject.getString("StopName"),
+                                jsonObject.getString("StopDesc"),
                                 jsonObject.getDouble("StopLat"),
                                 jsonObject.getDouble("StopLng"),
+                                jsonObject.getString("ZoneId"),
+                                jsonObject.getString("StopUrl"),
+                                jsonObject.getInt("LocationType"),
+                                jsonObject.getString("ParentStation"),
                                 jsonObject.getInt("StopSequence")
                         )
                 );

@@ -146,7 +146,7 @@ public class StopsFragment extends Fragment implements IFragment, RouteStopsTask
         mRouteStopNameTextView.setText(
 
                 String.format(getString(R.string.action_displaying_stops),
-                        mRoute.getRouteNumber() + " " + mRoute.getRouteName(),
+                        mRoute.getRouteShortName() + " " + mRoute.getRouteLongName(),
                         mRoute.getRouteHeading(),
                         mRouteDate.substring(4, 6) + "/" +
                                 mRouteDate.substring(6, 8) + "/" +
@@ -157,7 +157,7 @@ public class StopsFragment extends Fragment implements IFragment, RouteStopsTask
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(
                 String.format(getString(R.string.action_loading_stops),
-                        mRoute.getRouteNumber() + " " + mRoute.getRouteHeading(),
+                        mRoute.getRouteShortName() + " " + mRoute.getRouteHeading(),
                         mRouteDate.substring(4, 6) + "/" +
                                 mRouteDate.substring(6, 8) + "/" +
                                 mRouteDate.substring(0, 4)
@@ -178,6 +178,6 @@ public class StopsFragment extends Fragment implements IFragment, RouteStopsTask
     @Override
     public void fragmentShowMenu() {
         mSearchMenuItem.setVisible(true);
-        mSearchView.setVisibility(0);
+        mSearchView.setVisibility(View.VISIBLE);
     }
 }

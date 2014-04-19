@@ -74,8 +74,8 @@ public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
         T t = getItem(position);
 
         // Update titles of the view item.
-        viewHolder.numberTextView.setText(t.getRouteNumber());
-        viewHolder.nameTextView.setText(t.getRouteName());
+        viewHolder.numberTextView.setText(t.getRouteShortName());
+        viewHolder.nameTextView.setText(t.getRouteLongName());
         viewHolder.headingTextView.setText(t.getRouteHeading());
         viewHolder.nextImageView.setImageResource(t.getListItemImageResource());
 
@@ -123,7 +123,7 @@ public class RouteAdapter<T extends IRoute & IFilter> extends ArrayAdapter<T> {
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mFilteredList = (ArrayList<T>) filterResults.values;
+            mFilteredList = (List<T>) filterResults.values;
             notifyDataSetChanged();
         }
     }

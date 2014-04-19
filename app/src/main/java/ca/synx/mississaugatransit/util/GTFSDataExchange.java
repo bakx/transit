@@ -26,7 +26,7 @@ public class GTFSDataExchange {
 
     private String getData(String dataURL) throws IOException {
 
-        HttpClient client = null;
+        HttpClient client;
         InputStream is = null;
         String data = "";
 
@@ -40,7 +40,7 @@ public class GTFSDataExchange {
             StringBuilder sb = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + '\n');
+                sb.append(line);
             }
             is.close();
 
@@ -97,7 +97,7 @@ public class GTFSDataExchange {
         try {
             data = getData(
                     String.format(GTFS_BASE_URL + GET_STOPS_ROUTE_URL,
-                            route.getRouteNumber(),
+                            route.getRouteId(),
                             route.getRouteHeading(),
                             routeDate
                     )
@@ -117,7 +117,7 @@ public class GTFSDataExchange {
         try {
             data = getData(
                     String.format(GTFS_BASE_URL + GET_STOP_TIMES_URL,
-                            stop.getRoute().getRouteNumber(),
+                            stop.getRoute().getRouteId(),
                             stop.getRoute().getRouteHeading(),
                             stop.getStopId(),
                             routeDate
