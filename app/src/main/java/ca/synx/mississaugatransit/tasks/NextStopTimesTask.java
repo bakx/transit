@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ca.synx.mississaugatransit.app.R;
 import ca.synx.mississaugatransit.models.StopTime;
 
 public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<StopTime>> {
@@ -50,7 +49,6 @@ public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<Stop
             return nearestStopTimes;
         }
 
-
         //
         // Loop through all departure times to find best match
         //
@@ -89,7 +87,7 @@ public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<Stop
 
                 if (timeDifference < 0)
                     continue;
-
+/*
                 StopTime nearStopTime = new StopTime(
                         stopTime.getArrivalTime(),
                         String.format(
@@ -98,8 +96,9 @@ public class NextStopTimesTask extends AsyncTask<List<StopTime>, Void, List<Stop
                                 String.valueOf(timeDifference)
                         )
                 );
+                */
 
-                nearestStopTimes.add(nearStopTime);
+                //nearestStopTimes.add(nearStopTime);
             } catch (Exception e) {
                 Log.e("NextStopTimesTask:doInBackground", "" + e.getMessage());
                 e.printStackTrace();

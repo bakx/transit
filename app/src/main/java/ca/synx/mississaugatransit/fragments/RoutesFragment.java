@@ -198,14 +198,12 @@ public class RoutesFragment extends Fragment implements IFragment, RoutesTask.IR
         mSearchMenuItem.setVisible(false);
         mCalendarMenuItem.setVisible(false);
         mSearchView.setVisibility(View.GONE);
-
     }
 
     @Override
     public void fragmentShowMenu() {
         mSearchMenuItem.setVisible(true);
         mCalendarMenuItem.setVisible(true);
-        mSearchView.setVisibility(0);
-
+        mSearchView.setVisibility(View.VISIBLE);
     }
 }

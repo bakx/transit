@@ -30,7 +30,6 @@ public class Route implements IRoute, ISpinnerItem, IFilter, Serializable {
         this.mRouteHeading = routeHeading;
     }
 
-
     public int getStorageId() {
         return mStorageId;
     }

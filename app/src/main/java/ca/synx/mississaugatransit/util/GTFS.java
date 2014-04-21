@@ -18,9 +18,9 @@ public final class GTFS {
             case 0:
                 switch (iconType) {
                     case LIGHT:
-                        return R.drawable.ic_bus_stop;
+                        return R.drawable.ic_bus_stop_miway;
                     case DARK:
-                        return R.drawable.ic_bus_stop_dark;
+                        return R.drawable.ic_bus_stop_miway;
                 }
             case 1:
                 switch (iconType) {

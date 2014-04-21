@@ -14,29 +14,28 @@ public class Stop implements IStop, IFilter, Serializable {
     private String mStopDesc;
     private double mStopLat;
     private double mStopLng;
+    private int mStopSequence;
     private String mZoneId;
     private String mStopUrl;
     private int mLocationType;
     private String mParentStation;
 
-    private int mStopSequence;
     private List<StopTime> mStopTimes;
     private List<StopTime> mNextStopTimes;
     private Route mRoute;
 
-    public Stop(String stopId, String stopCode, String stopName, String stopDesc, double stopLat, double stopLng, String zoneId, String stopUrl, int locationType, String parentStation, int stopSequence) {
+    public Stop(String stopId, String stopCode, String stopName, String stopDesc, double stopLat, double stopLng, int stopSequence, String zoneId, String stopUrl, int locationType, String parentStation) {
         this.mStopId = stopId;
         this.mStopCode = stopCode;
         this.mStopName = stopName;
         this.mStopDesc = stopDesc;
         this.mStopLat = stopLat;
         this.mStopLng = stopLng;
+        this.mStopSequence = stopSequence;
         this.mZoneId = zoneId;
         this.mStopUrl = stopUrl;
         this.mLocationType = locationType;
         this.mParentStation = parentStation;
-
-        this.mStopSequence = stopSequence;
     }
 
    /* Implementation of interface IStop */
@@ -81,6 +80,12 @@ public class Stop implements IStop, IFilter, Serializable {
         return mStopUrl;
     }
 
+    @Override
+    public int getStopSequence() {
+        return mStopSequence;
+    }
+
+    @Override
     public int getLocationType() {
         return mLocationType;
     }
@@ -90,15 +95,18 @@ public class Stop implements IStop, IFilter, Serializable {
         return mParentStation;
     }
 
+    /* Implementation of interface IFilter */
+
     @Override
-    public int getStopSequence() {
-        return mStopSequence;
+    public String getFilterData() {
+        return this.mStopId + this.mStopName;
     }
+
+    /* */
 
     public int getListItemImageResource() {
         return 0;
     }
-
 
     public Route getRoute() {
         return mRoute;
@@ -114,12 +122,5 @@ public class Stop implements IStop, IFilter, Serializable {
 
     public List<StopTime> getNextStopTimes() {
         return mNextStopTimes;
-    }
-
-    /* Implementation of interface IFilter */
-
-    @Override
-    public String getFilterData() {
-        return this.mStopId + this.mStopName;
     }
 }

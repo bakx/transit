@@ -62,11 +62,12 @@ public class GTFSParser {
                                 jsonObject.getString("StopDesc"),
                                 jsonObject.getDouble("StopLat"),
                                 jsonObject.getDouble("StopLng"),
+                                jsonObject.getInt("StopSequence"),
                                 jsonObject.getString("ZoneId"),
                                 jsonObject.getString("StopUrl"),
                                 jsonObject.getInt("LocationType"),
-                                jsonObject.getString("ParentStation"),
-                                jsonObject.getInt("StopSequence")
+                                jsonObject.getString("ParentStation")
+
                         )
                 );
             } catch (Exception e) {
@@ -88,8 +89,16 @@ public class GTFSParser {
             try {
                 stopTimes.add(
                         new StopTime(
+                                jsonObject.getString("TripId"),
                                 jsonObject.getString("ArrivalTime"),
-                                jsonObject.getString("DepartureTime")
+                                jsonObject.getString("DepartureTime"),
+                                jsonObject.getString("StopId"),
+                                jsonObject.getString("DepartureTime"),
+                                jsonObject.getInt("PickupType"),
+                                jsonObject.getInt("DropOffType"),
+                                jsonObject.getInt("StopSequence"),
+                                jsonObject.getString("StartStopId"),
+                                jsonObject.getString("FinalStopId")
                         )
                 );
             } catch (Exception e) {

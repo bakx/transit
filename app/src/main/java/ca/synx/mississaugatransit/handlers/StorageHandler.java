@@ -169,11 +169,12 @@ public final class StorageHandler {
                             cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_DESC)),
                             cursor.getDouble(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_LAT)),
                             cursor.getDouble(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_LNG)),
+                            cursor.getInt(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_SEQUENCE)),
                             cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_ZONE_ID)),
                             cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_URL)),
                             cursor.getInt(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_LOCATION_TYPE)),
-                            cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_PARENT_STATION)),
-                            cursor.getInt(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_SEQUENCE))
+                            cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_PARENT_STATION))
+
                     );
 
                     // Attach route.
@@ -242,7 +243,7 @@ public final class StorageHandler {
         Cursor cursor = null;
 
         try {
-            cursor = db.rawQuery("SELECT * FROM " + CacheStopTimesTable.TABLE_NAME + " ORDER BY " + CacheStopTimesTable.COLUMN_CACHE_ID, null);
+            cursor = db.rawQuery("SELECT * FROM " + CacheStopTimesTable.TABLE_NAME + " ORDER BY " + CacheStopTimesTable.COLUMN_STOP_STORAGE_ID, null);
 
             if (cursor.moveToFirst() && cursor.getCount() > 0) {
 
@@ -319,7 +320,7 @@ public final class StorageHandler {
                             CacheStopTimesTable.COLUMN_ARRIVAL_TIME,
                             CacheStopTimesTable.COLUMN_DEPARTURE_TIME
                     },
-                    CacheStopTimesTable.COLUMN_CACHE_ID + " = ? ",
+                    CacheStopTimesTable.COLUMN_STOP_STORAGE_ID + " = ? ",
                     new String[]{
                             ""
                     }, null, null, null
@@ -330,9 +331,20 @@ public final class StorageHandler {
                 while (!cursor.isAfterLast()) {
 
                     StopTime stopTime = new StopTime(
+                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_TRIP_ID)),
                             cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_ARRIVAL_TIME)),
-                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_DEPARTURE_TIME))
+                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_DEPARTURE_TIME)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_ID)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_HEADSIGN)),
+                            cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_SEQUENCE)),
+                            cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_PICKUP_TYPE)),
+                            cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_DROP_OFF_TYPE)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_START_STOP_ID)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_FINAL_STOP_ID))
+
                     );
+
+                    // cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_STORAGE_ID))
 
                     // Add item to list.
                     list.add(stopTime);
@@ -367,7 +379,7 @@ public final class StorageHandler {
                 ContentValues values = new ContentValues();
                 values.put(CacheStopTimesTable.COLUMN_ARRIVAL_TIME, stopTimes.get(i).getArrivalTime());
                 values.put(CacheStopTimesTable.COLUMN_DEPARTURE_TIME, stopTimes.get(i).getDepartureTime());
-                values.put(CacheStopTimesTable.COLUMN_CACHE_ID, "");
+                values.put(CacheStopTimesTable.COLUMN_STOP_STORAGE_ID, "");
 
                 db.insert(CacheStopTimesTable.TABLE_NAME, null, values);
             }

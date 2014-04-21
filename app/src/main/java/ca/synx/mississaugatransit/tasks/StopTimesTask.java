@@ -28,22 +28,29 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
     @Override
     protected List<StopTime> doInBackground(Stop... params) {
 
+        // Get selected stop from params.
         Stop stop = params[0];
+
+        //
+        // Cache check.
+        //
 
         List<StopTime> stopTimes = mStorageHandler.getStopTimes(stop);
 
-        // Check if items were found in cache.
         if (stopTimes.size() > 0)
             return stopTimes;
 
+        //
+        // Fetch data from web service.
+        //
+
         stopTimes = new ArrayList<StopTime>();
 
-        String data = (new GTFSDataExchange().getStopTimesData(stop, ""));
-
-        if (data == null)
-            return null;
-
         try {
+            // Fetch data from web service.
+            String data = (new GTFSDataExchange().getStopTimesData(stop, ""));
+
+            // Process web service data.
             stopTimes = GTFSParser.getStopTimes(data);
 
         } catch (JSONException e) {
@@ -64,8 +71,10 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
         SimpleDateFormat currentDateFormat = new SimpleDateFormat("hh:mm:ss");
         SimpleDateFormat newDateFormat = new SimpleDateFormat("hh:mm aa");
 
+        /*
         for (StopTime stopTime : stopTimes) {
             try {
+
                 stopTime.setDepartureTime(
                         newDateFormat.format(
                                 currentDateFormat.parse(stopTime.getDepartureTime()
@@ -76,13 +85,14 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
                 Log.e("StopTimesTask:onPostExecute", "" + e.getMessage());
                 e.printStackTrace();
             }
+
         }
 
         mListener.onStopTimesTaskComplete(stopTimes);
+                */
     }
 
     public interface IStopTimesTask {
         void onStopTimesTaskComplete(List<StopTime> stopTimes);
     }
-
 }
