@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/routeStopTimeHeader"
+        style="@style/RouteStopTimeHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/previousImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/ic_action_previous_item" />
+
+        <TextView
+            android:id="@+id/routeStopNameTextView"
+            style="@style/RouteStopNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Stop Times"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/routeStopTimesListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/routeStopTimeHeader"
+        android:numColumns="3" />
+
+</RelativeLayout>

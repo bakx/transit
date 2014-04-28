@@ -8,6 +8,7 @@ import ca.synx.mississaugatransit.interfaces.IStop;
 
 public class Stop implements IStop, IFilter, Serializable {
 
+    private int mStorageId;
     private String mStopId;
     private String mStopCode;
     private String mStopName;
@@ -24,7 +25,8 @@ public class Stop implements IStop, IFilter, Serializable {
     private List<StopTime> mNextStopTimes;
     private Route mRoute;
 
-    public Stop(String stopId, String stopCode, String stopName, String stopDesc, double stopLat, double stopLng, int stopSequence, String zoneId, String stopUrl, int locationType, String parentStation) {
+    public Stop(int storageId, String stopId, String stopCode, String stopName, String stopDesc, double stopLat, double stopLng, int stopSequence, String zoneId, String stopUrl, int locationType, String parentStation) {
+        this.mStorageId = storageId;
         this.mStopId = stopId;
         this.mStopCode = stopCode;
         this.mStopName = stopName;
@@ -102,11 +104,31 @@ public class Stop implements IStop, IFilter, Serializable {
         return this.mStopId + this.mStopName;
     }
 
-    /* */
+    /* Internal storage IDs */
 
-    public int getListItemImageResource() {
-        return 0;
+    public int getStorageId() {
+        return mStorageId;
     }
+
+    /* StopTimes  */
+
+    public List<StopTime> getStopTimes() {
+        return mStopTimes;
+    }
+
+    public void setStopTimes(List<StopTime> mStopTimes) {
+        this.mStopTimes = mStopTimes;
+    }
+
+    public List<StopTime> getNextStopTimes() {
+        return mNextStopTimes;
+    }
+
+    public void setNextStopTimes(List<StopTime> mNextStopTimes) {
+        this.mNextStopTimes = mNextStopTimes;
+    }
+
+    /* */
 
     public Route getRoute() {
         return mRoute;
@@ -116,11 +138,7 @@ public class Stop implements IStop, IFilter, Serializable {
         mRoute = route;
     }
 
-    public List<StopTime> getStopTimes() {
-        return mStopTimes;
-    }
-
-    public List<StopTime> getNextStopTimes() {
-        return mNextStopTimes;
+    public int getListItemImageResource() {
+        return 0;
     }
 }

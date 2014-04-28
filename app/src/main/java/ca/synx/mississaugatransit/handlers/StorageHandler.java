@@ -138,6 +138,7 @@ public final class StorageHandler {
             cursor = db.query(CacheRouteStopsTable.TABLE_NAME,
                     new String[]
                             {
+                                    CacheRouteStopsTable.COLUMN_STORAGE_ID,
                                     CacheRouteStopsTable.COLUMN_STOP_ID,
                                     CacheRouteStopsTable.COLUMN_STOP_CODE,
                                     CacheRouteStopsTable.COLUMN_STOP_NAME,
@@ -163,6 +164,7 @@ public final class StorageHandler {
                 while (cursor.isAfterLast() == false) {
 
                     Stop stop = new Stop(
+                            cursor.getInt(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STORAGE_ID)),
                             cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_ID)),
                             cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_CODE)),
                             cursor.getString(cursor.getColumnIndex(CacheRouteStopsTable.COLUMN_STOP_NAME)),
@@ -341,10 +343,7 @@ public final class StorageHandler {
                             cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_DROP_OFF_TYPE)),
                             cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_START_STOP_ID)),
                             cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_FINAL_STOP_ID))
-
                     );
-
-                    // cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_STORAGE_ID))
 
                     // Add item to list.
                     list.add(stopTime);
@@ -375,13 +374,22 @@ public final class StorageHandler {
         List<StopTime> stopTimes = stop.getStopTimes();
 
         try {
-            for (int i = 0; i < stopTimes.size(); i++) {
+            for (StopTime stopTime : stop.getStopTimes()) {
                 ContentValues values = new ContentValues();
-                values.put(CacheStopTimesTable.COLUMN_ARRIVAL_TIME, stopTimes.get(i).getArrivalTime());
-                values.put(CacheStopTimesTable.COLUMN_DEPARTURE_TIME, stopTimes.get(i).getDepartureTime());
-                values.put(CacheStopTimesTable.COLUMN_STOP_STORAGE_ID, "");
+                values.put(CacheStopTimesTable.COLUMN_TRIP_ID, stopTime.getTripId());
+                values.put(CacheStopTimesTable.COLUMN_ARRIVAL_TIME, stopTime.getArrivalTime());
+                values.put(CacheStopTimesTable.COLUMN_DEPARTURE_TIME, stopTime.getDepartureTime());
+                values.put(CacheStopTimesTable.COLUMN_STOP_ID, stopTime.getStopId());
+                values.put(CacheStopTimesTable.COLUMN_STOP_HEADSIGN, stopTime.getStopHeadsign());
+                values.put(CacheStopTimesTable.COLUMN_STOP_SEQUENCE, stopTime.getStopSequence());
+                values.put(CacheStopTimesTable.COLUMN_PICKUP_TYPE, stopTime.getPickupType());
+                values.put(CacheStopTimesTable.COLUMN_DROP_OFF_TYPE, stopTime.getDropOffType());
+                values.put(CacheStopTimesTable.COLUMN_START_STOP_ID, stopTime.getStartStopId());
+                values.put(CacheStopTimesTable.COLUMN_FINAL_STOP_ID, stopTime.getFinalStopId());
+                values.put(CacheStopTimesTable.COLUMN_STOP_SEQUENCE, stopTime.getStopSequence());
+                values.put(CacheStopTimesTable.COLUMN_STOP_STORAGE_ID, stop.getStorageId());
 
-                db.insert(CacheStopTimesTable.TABLE_NAME, null, values);
+                db.insert(CacheRouteStopsTable.TABLE_NAME, null, values);
             }
         } catch (Exception e) {
             Log.e("StorageHandler:saveStopTimes", "" + e.getMessage());

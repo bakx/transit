@@ -16,11 +16,13 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
 
     private static View mView;
     private Route mRoute;
+    private Stop mStop;
     private String mRouteDate;
 
     private ViewFlipper mViewFlipper;
     private RoutesFragment mRoutesFragment;
     private StopsFragment mStopsFragment;
+    private StopTimesFragment mStopTimesFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,9 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
         super.onStart();
 
         mViewFlipper = (ViewFlipper) mView.findViewById(R.id.routesViewFlipperViewFlipper);
-        mRoutesFragment = (RoutesFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperRouteFragment);
-        mStopsFragment = (StopsFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperStopFragment);
+        mRoutesFragment = (RoutesFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperRoutesFragment);
+        mStopsFragment = (StopsFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperStopsFragment);
+        mStopTimesFragment = (StopTimesFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.routesViewFlipperStopTimesFragment);
     }
 
     public void showPrevious() {
@@ -56,18 +59,17 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
         updateActionBar();
     }
 
-    public void showNext(final Route route, final String routeDate) {
+    public void showNext(final Route route, final Stop stop, final String routeDate) {
         mViewFlipper.setInAnimation(getActivity().getApplicationContext(), R.anim.left_in);
         mViewFlipper.setOutAnimation(getActivity().getApplicationContext(), R.anim.left_out);
 
         // Switch to next view.
-        mViewFlipper.showNext();
-
-        //
         mViewFlipper.getOutAnimation().setAnimationListener(this);
+        mViewFlipper.showNext();
 
         // Assign local variables for use in the animation end listeners.
         mRoute = route;
+        mStop = stop;
         mRouteDate = routeDate;
 
         // Update menu and title items.
@@ -77,23 +79,37 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
     public void updateActionBar() {
 
         switch (mViewFlipper.getCurrentView().getId()) {
-            case R.id.routesViewFlipperRouteFragment:
+            case R.id.routesViewFlipperRoutesFragment:
 
                 // Update title.
                 getActivity().getActionBar().setTitle(getString(R.string.title_routes));
 
                 mRoutesFragment.fragmentShowMenu();
                 mStopsFragment.fragmentHideMenu();
+                mStopTimesFragment.fragmentHideMenu();
 
                 break;
 
-            case R.id.routesViewFlipperStopFragment:
+            case R.id.routesViewFlipperStopsFragment:
 
                 // Update title.
                 getActivity().getActionBar().setTitle(getString(R.string.title_stops));
 
                 mRoutesFragment.fragmentHideMenu();
                 mStopsFragment.fragmentShowMenu();
+                mStopTimesFragment.fragmentHideMenu();
+
+                break;
+
+
+            case R.id.routesViewFlipperStopTimesFragment:
+
+                // Update title.
+                getActivity().getActionBar().setTitle(getString(R.string.title_stop_times));
+
+                mRoutesFragment.fragmentHideMenu();
+                mStopsFragment.fragmentHideMenu();
+                mStopTimesFragment.fragmentShowMenu();
 
                 break;
         }
@@ -108,12 +124,16 @@ public class RoutesViewFlipperFragment extends Fragment implements Animation.Ani
     public void onAnimationEnd(Animation animation) {
 
         switch (mViewFlipper.getCurrentView().getId()) {
-            case R.id.routesViewFlipperRouteFragment:
+            case R.id.routesViewFlipperRoutesFragment:
                 mRoutesFragment.fragmentLoaded();
                 break;
 
-            case R.id.routesViewFlipperStopFragment:
+            case R.id.routesViewFlipperStopsFragment:
                 mStopsFragment.fragmentLoaded(mRoute, mRouteDate);
+                break;
+
+            case R.id.routesViewFlipperStopTimesFragment:
+                mStopTimesFragment.fragmentLoaded(mRoute, mStop, mRouteDate);
                 break;
         }
     }

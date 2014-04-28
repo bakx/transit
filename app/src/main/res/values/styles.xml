@@ -75,4 +75,26 @@
         <item name="android:padding">4dp</item>
     </style>
 
+    <!-- StopTime Item -->
+    <style name="RouteStopTimeHeader">
+        <item name="android:background">#F26222</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="RouteStopTimeNameTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="ItemStopTimeTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff2e2e2e</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
+    <style name="ItemStopTimeTextNextView">
+        <item name="android:textColor">#ff2e2e2e</item>
+        <item name="android:padding">4dp</item>
+    </style>
+
 </resources>

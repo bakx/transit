@@ -56,6 +56,7 @@ public class GTFSParser {
             try {
                 stops.add(
                         new Stop(
+                                0,
                                 jsonObject.getString("StopId"),
                                 jsonObject.getString("StopCode"),
                                 jsonObject.getString("StopName"),

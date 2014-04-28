@@ -15,7 +15,7 @@ import ca.synx.mississaugatransit.models.StopTime;
 import ca.synx.mississaugatransit.util.GTFSDataExchange;
 import ca.synx.mississaugatransit.util.GTFSParser;
 
-public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
+public class StopTimesTask extends AsyncTask<Object, Void, List<StopTime>> {
 
     private IStopTimesTask mListener;
     private StorageHandler mStorageHandler;
@@ -26,10 +26,14 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
     }
 
     @Override
-    protected List<StopTime> doInBackground(Stop... params) {
+    protected List<StopTime> doInBackground(Object... params) {
 
-        // Get selected stop from params.
-        Stop stop = params[0];
+        // Route is [0]
+        Stop stop = (Stop) params[0];
+
+        // Route Date is [1]
+        String routeDate = (String) params[1];
+
 
         //
         // Cache check.
@@ -48,7 +52,7 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
 
         try {
             // Fetch data from web service.
-            String data = (new GTFSDataExchange().getStopTimesData(stop, ""));
+            String data = (new GTFSDataExchange().getStopTimesData(stop, routeDate));
 
             // Process web service data.
             stopTimes = GTFSParser.getStopTimes(data);
@@ -87,9 +91,9 @@ public class StopTimesTask extends AsyncTask<Stop, Void, List<StopTime>> {
             }
 
         }
-
+ */
         mListener.onStopTimesTaskComplete(stopTimes);
-                */
+
     }
 
     public interface IStopTimesTask {

@@ -1,7 +1,7 @@
 package ca.synx.mississaugatransit.db;
 
 public final class CacheStopsTable {
-    public static final String TABLE_NAME = "cache_stop_times";
+    public static final String TABLE_NAME = "cache_stops";
 
     public static final String COLUMN_STOP_ID = "stop_id";
     public static final String COLUMN_STOP_NAME = "stop_name";

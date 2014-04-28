@@ -7,6 +7,7 @@
     <string name="title_favorites">Favourites</string>
     <string name="title_routes">Routes</string>
     <string name="title_stops">Stops</string>
+    <string name="title_stop_times">Stop times</string>
     <string name="title_map">Map</string>
 
     <!-- Navigation drawer -->

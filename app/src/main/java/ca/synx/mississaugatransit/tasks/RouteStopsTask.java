@@ -24,7 +24,7 @@ public class RouteStopsTask extends AsyncTask<Object, Void, List<Stop>> {
     @Override
     protected List<Stop> doInBackground(Object... params) {
 
-        // Route data is [0]
+        // Route is [0]
         Route route = (Route) params[0];
 
         // Route Date is [1]

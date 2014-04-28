@@ -9,16 +9,23 @@
         android:layout_height="fill_parent">
 
         <fragment
-            android:id="@+id/routesViewFlipperRouteFragment"
+            android:id="@+id/routesViewFlipperRoutesFragment"
             class="ca.synx.mississaugatransit.fragments.RoutesFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
         <fragment
-            android:id="@+id/routesViewFlipperStopFragment"
+            android:id="@+id/routesViewFlipperStopsFragment"
             class="ca.synx.mississaugatransit.fragments.StopsFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
+
+        <fragment
+            android:id="@+id/routesViewFlipperStopTimesFragment"
+            class="ca.synx.mississaugatransit.fragments.StopTimesFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
 
     </ViewFlipper>
 

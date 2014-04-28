@@ -141,12 +141,12 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onRouteSelected(Route route, String routeDate) {
-        mRoutesViewFlipperFragment.showNext(route, routeDate);
+        mRoutesViewFlipperFragment.showNext(route, null, routeDate);
     }
 
     @Override
     public void onStopSelected(Route route, Stop stop, String routeDate) {
-        mRoutesViewFlipperFragment.showNext(null, null);
+        mRoutesViewFlipperFragment.showNext(route, stop, routeDate);
     }
 
     /**

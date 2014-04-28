@@ -30,14 +30,6 @@ public class Route implements IRoute, ISpinnerItem, IFilter, Serializable {
         this.mRouteHeading = routeHeading;
     }
 
-    public int getStorageId() {
-        return mStorageId;
-    }
-
-    public void setStorageId(int storageId) {
-        this.mStorageId = storageId;
-    }
-
     /* Implementation of interface IRoute */
 
     @Override
@@ -102,5 +94,15 @@ public class Route implements IRoute, ISpinnerItem, IFilter, Serializable {
     @Override
     public int getSpinnerItemImageResource() {
         return 0;
+    }
+
+    /* Internal storage IDs */
+
+    public int getStorageId() {
+        return mStorageId;
+    }
+
+    public void setStorageId(int storageId) {
+        this.mStorageId = storageId;
     }
 }
