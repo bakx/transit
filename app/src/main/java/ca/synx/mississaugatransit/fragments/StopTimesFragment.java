@@ -23,8 +23,9 @@ import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.models.Stop;
 import ca.synx.mississaugatransit.models.StopTime;
 import ca.synx.mississaugatransit.tasks.StopTimesTask;
+import ca.synx.mississaugatransit.tasks.UpcomingStopTimesTask;
 
-public class StopTimesFragment extends Fragment implements IFragment, StopTimesTask.IStopTimesTask {
+public class StopTimesFragment extends Fragment implements IFragment, StopTimesTask.IStopTimesTask, UpcomingStopTimesTask.IUpcomingStopTimesTask {
 
     private Route mRoute;
     private Stop mStop;
@@ -33,9 +34,13 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
     private View mView;
     private ProgressDialog mProgressDialog;
     private StopTimeAdapter<StopTime> mStopTimeAdapter;
+    private StopTimeAdapter<StopTime> mUpcomingStopTimeAdapter;
     private ImageView mPreviousImageView;
-    private TextView mRouteStopNameTextView;
-    private GridView mRouteStopTimesListView;
+    private TextView mStopTimeHeaderTextView;
+
+    private GridView mStopTimesUpcomingStopsListView;
+    private GridView mStopTimesAllStopsListView;
+
 
     private RoutesViewFlipperFragment.IRoutesViewFlipperFragment mRoutesViewFlipperFragment;
 
@@ -53,13 +58,15 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
         mView = inflater.inflate(R.layout.fragment_stop_times, container, false);
 
         mPreviousImageView = (ImageView) mView.findViewById(R.id.previousImageView);
-        mRouteStopNameTextView = (TextView) mView.findViewById(R.id.routeStopNameTextView);
-        mRouteStopTimesListView = (GridView) mView.findViewById(R.id.routeStopTimesListView);
+        mStopTimeHeaderTextView = (TextView) mView.findViewById(R.id.stopTimeHeaderTextView);
+
+        mStopTimesUpcomingStopsListView = (GridView) mView.findViewById(R.id.stopTimesUpcomingStopsListView);
+        mStopTimesAllStopsListView = (GridView) mView.findViewById(R.id.stopTimesAllStopsListView);
 
         mPreviousImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRouteStopNameTextView.setText("");
+                mStopTimeHeaderTextView.setText("");
                 mStopTimeAdapter.clear();
                 mRoutesViewFlipperFragment.navigateBack();
             }
@@ -103,8 +110,18 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
     public void onStopTimesTaskComplete(List<StopTime> stopTimes) {
         mStop.setStopTimes(stopTimes);
         mStopTimeAdapter = new StopTimeAdapter<StopTime>(getActivity().getApplicationContext(), R.layout.item_stop_time, stopTimes);
-        mRouteStopTimesListView.setAdapter(mStopTimeAdapter);
+        mStopTimesAllStopsListView.setAdapter(mStopTimeAdapter);
         mProgressDialog.cancel();
+
+        // Calculate upcoming stop times.
+        new UpcomingStopTimesTask(getActivity().getApplicationContext(), this, 3).execute(stopTimes);
+    }
+
+    @Override
+    public void onUpcomingStopTimesTaskComplete(List<StopTime> stopTimes) {
+        mStop.setNextStopTimes(stopTimes);
+        mUpcomingStopTimeAdapter = new StopTimeAdapter<StopTime>(getActivity().getApplicationContext(), R.layout.item_stop_time, stopTimes);
+        mStopTimesUpcomingStopsListView.setAdapter(mUpcomingStopTimeAdapter);
     }
 
     @Override
@@ -116,24 +133,25 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
         mRouteDate = (String) params[2];
 
         // Update text view that displays what date is being shown.
-        mRouteStopNameTextView.setText(
+        mStopTimeHeaderTextView.setText(
 
-                String.format(getString(R.string.action_displaying_stops),
-                        mRoute.getRouteShortName() + " " + mRoute.getRouteLongName(),
-                        mRoute.getRouteHeading(),
+                String.format(getString(R.string.action_displaying_stoptimes),
+                        mRoute.getRouteShortName() + " " + mRoute.getRouteLongName() + " " + mRoute.getRouteHeading(),
                         mRouteDate.substring(4, 6) + "/" +
                                 mRouteDate.substring(6, 8) + "/" +
-                                mRouteDate.substring(0, 4)
+                                mRouteDate.substring(0, 4),
+                        mStop.getStopName()
                 )
         );
 
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(
-                String.format(getString(R.string.action_loading_stops),
+                String.format(getString(R.string.action_loading_stoptimes),
                         mRoute.getRouteShortName() + " " + mRoute.getRouteHeading(),
                         mRouteDate.substring(4, 6) + "/" +
                                 mRouteDate.substring(6, 8) + "/" +
-                                mRouteDate.substring(0, 4)
+                                mRouteDate.substring(0, 4),
+                        mStop.getStopName()
                 )
         );
         mProgressDialog.show();
@@ -149,5 +167,4 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
     @Override
     public void fragmentShowMenu() {
     }
-
 }

@@ -76,14 +76,19 @@
     </style>
 
     <!-- StopTime Item -->
-    <style name="RouteStopTimeHeader">
+    <style name="StopTimeHeader">
         <item name="android:background">#F26222</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="RouteStopTimeNameTextView">
+    <style name="StopTimeHeaderTextView">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="StopTimeNameTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff484848</item>
     </style>
 
     <style name="ItemStopTimeTextView">

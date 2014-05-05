@@ -85,7 +85,7 @@ public class StopAdapter<T extends IStop & IFilter> extends ArrayAdapter<T> {
         viewHolder.nextImageView.setImageResource(t.getListItemImageResource());
 
         // Attach object T to view.
-        view.setTag(R.id.object_iroute_ifilter, t);
+        view.setTag(R.id.object_istop_ifilter, t);
 
         return view;
     }

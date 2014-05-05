@@ -5,7 +5,6 @@ import android.util.Log;
 
 import org.json.JSONException;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class StopTimesTask extends AsyncTask<Object, Void, List<StopTime>> {
 
         // Route Date is [1]
         String routeDate = (String) params[1];
-
 
         //
         // Cache check.
@@ -63,7 +61,7 @@ public class StopTimesTask extends AsyncTask<Object, Void, List<StopTime>> {
         }
 
         // Store items in cache.
-        mStorageHandler.saveStopTimes(stop);
+        mStorageHandler.saveStopTimes(stop, stopTimes);
 
         return stopTimes;
     }
@@ -72,28 +70,7 @@ public class StopTimesTask extends AsyncTask<Object, Void, List<StopTime>> {
     protected void onPostExecute(List<StopTime> stopTimes) {
         super.onPostExecute(stopTimes);
 
-        SimpleDateFormat currentDateFormat = new SimpleDateFormat("hh:mm:ss");
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("hh:mm aa");
-
-        /*
-        for (StopTime stopTime : stopTimes) {
-            try {
-
-                stopTime.setDepartureTime(
-                        newDateFormat.format(
-                                currentDateFormat.parse(stopTime.getDepartureTime()
-                                )
-                        )
-                );
-            } catch (Exception e) {
-                Log.e("StopTimesTask:onPostExecute", "" + e.getMessage());
-                e.printStackTrace();
-            }
-
-        }
- */
         mListener.onStopTimesTaskComplete(stopTimes);
-
     }
 
     public interface IStopTimesTask {

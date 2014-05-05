@@ -3,8 +3,8 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/routeStopTimeHeader"
-        style="@style/RouteStopTimeHeader"
+        android:id="@+id/stopTimeHeader"
+        style="@style/StopTimeHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
@@ -19,8 +19,8 @@
             android:src="@drawable/ic_action_previous_item" />
 
         <TextView
-            android:id="@+id/routeStopNameTextView"
-            style="@style/RouteStopNameTextView"
+            android:id="@+id/stopTimeHeaderTextView"
+            style="@style/StopTimeHeaderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -29,11 +29,38 @@
 
     </RelativeLayout>
 
-    <GridView
-        android:id="@+id/routeStopTimesListView"
+    <TextView
+        android:id="@+id/stopTimeNameTextView"
+        style="@style/StopTimeNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/routeStopTimeHeader"
+        android:layout_below="@id/stopTimeHeader"
+        android:gravity="center_horizontal"
+        android:text="Upcoming Scheduled Stops"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <GridView
+        android:id="@+id/stopTimesUpcomingStopsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stopTimeNameTextView"
         android:numColumns="3" />
+
+    <TextView
+        android:id="@+id/stopTimeAllStopsTextView"
+        style="@style/StopTimeNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stopTimesUpcomingStopsListView"
+        android:gravity="center_horizontal"
+        android:text="All Scheduled Stops"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <GridView
+        android:id="@+id/stopTimesAllStopsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stopTimeAllStopsTextView"
+        android:numColumns="4" />
 
 </RelativeLayout>

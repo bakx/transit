@@ -110,6 +110,10 @@ public class Stop implements IStop, IFilter, Serializable {
         return mStorageId;
     }
 
+    public void setStorageId(int storageId) {
+        this.mStorageId = storageId;
+    }
+
     /* StopTimes  */
 
     public List<StopTime> getStopTimes() {

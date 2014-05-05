@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +85,9 @@ public class GTFSParser {
 
         JSONArray jsonArray = new JSONArray(data);
 
+        SimpleDateFormat currentDateFormat = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("hh:mm aa");
+
         for (int i = 0; i < jsonArray.length(); ++i) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
@@ -91,10 +95,10 @@ public class GTFSParser {
                 stopTimes.add(
                         new StopTime(
                                 jsonObject.getString("TripId"),
-                                jsonObject.getString("ArrivalTime"),
-                                jsonObject.getString("DepartureTime"),
+                                newDateFormat.format(currentDateFormat.parse(jsonObject.getString("ArrivalTime"))),
+                                newDateFormat.format(currentDateFormat.parse(jsonObject.getString("DepartureTime"))),
                                 jsonObject.getString("StopId"),
-                                jsonObject.getString("DepartureTime"),
+                                jsonObject.getString("StopHeadsign"),
                                 jsonObject.getInt("PickupType"),
                                 jsonObject.getInt("DropOffType"),
                                 jsonObject.getInt("StopSequence"),

@@ -31,6 +31,11 @@ public class StopTime implements IStopItem, Serializable {
         this.mFinalStopId = finalStopId;
     }
 
+    public StopTime(String arrivalTime, String departureTime) {
+        this.mArrivalTime = arrivalTime;
+        this.mDepartureTime = departureTime;
+    }
+
     /* Implementation of interface IStopTime */
 
     @Override

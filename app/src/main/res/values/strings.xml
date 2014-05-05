@@ -25,6 +25,10 @@
     <string name="action_loading_stops">Loading stops for:\nRoute %1$s\non %2$s</string>
     <string name="action_displaying_stops">%1$s (%2$s)\non %3$s</string>
 
+    <!-- StopTimes Feedback -->
+    <string name="action_loading_stoptimes">Loading scheduled stops for:\nRoute %1$s\non %2$s\nat stop %3$s</string>
+    <string name="action_displaying_stoptimes">Route %1$s\non %2$s\nat %3$s</string>
+
     <!-- Actions -->
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
