@@ -16,6 +16,7 @@ import android.widget.TextView;
 import ca.synx.mississaugatransit.fragments.MapsFragment;
 import ca.synx.mississaugatransit.fragments.NavigationDrawerFragment;
 import ca.synx.mississaugatransit.fragments.RoutesViewFlipperFragment;
+import ca.synx.mississaugatransit.fragments.StopsViewFlipperFragment;
 import ca.synx.mississaugatransit.handlers.DatabaseHandler;
 import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.models.Stop;
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private RoutesViewFlipperFragment mRoutesViewFlipperFragment;
+    private StopsViewFlipperFragment mStopsViewFlipperFragment;
     private CharSequence mTitle;
 
     @Override
@@ -115,7 +117,10 @@ public class MainActivity extends ActionBarActivity
 
                 return mRoutesViewFlipperFragment;
             case 3:
-                return PlaceholderFragment.newInstance(position);
+                if (mStopsViewFlipperFragment == null)
+                    mStopsViewFlipperFragment = new StopsViewFlipperFragment();
+
+                return mStopsViewFlipperFragment;
             case 4:
                 return MapsFragment.newInstance();
         }

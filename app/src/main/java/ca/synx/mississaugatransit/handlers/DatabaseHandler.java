@@ -7,11 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import ca.synx.mississaugatransit.db.CacheRouteStopsTable;
 import ca.synx.mississaugatransit.db.CacheRoutesTable;
 import ca.synx.mississaugatransit.db.CacheStopTimesTable;
+import ca.synx.mississaugatransit.db.CacheStopsTable;
 import ca.synx.mississaugatransit.db.FavoriteTable;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "transit.db";
     private static DatabaseHandler mDatabaseHandler;
 
@@ -31,7 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL(CacheRoutesTable.CREATE_TABLE());
         db.execSQL(CacheRouteStopsTable.CREATE_TABLE());
-        //db.execSQL(CacheStopsTable.CREATE_TABLE());
+        db.execSQL(CacheStopsTable.CREATE_TABLE());
         db.execSQL(CacheStopTimesTable.CREATE_TABLE());
         db.execSQL(FavoriteTable.CREATE_TABLE());
     }
@@ -40,7 +41,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL(CacheRoutesTable.DROP_TABLE());
         db.execSQL(CacheRouteStopsTable.DROP_TABLE());
-        //db.execSQL(CacheStopsTable.DROP_TABLE());
+        db.execSQL(CacheStopsTable.DROP_TABLE());
         db.execSQL(CacheStopTimesTable.DROP_TABLE());
         db.execSQL(FavoriteTable.DROP_TABLE());
 

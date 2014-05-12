@@ -75,7 +75,7 @@ public class GTFSDataExchange {
         return data;
     }
 
-    public String getStopsData(String routeDate) {
+    public String getStopsData() {
         String data = "";
 
         try {

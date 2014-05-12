@@ -16,8 +16,6 @@ public class StopTime implements IStopItem, Serializable {
     private String mStartStopId;
     private String mFinalStopId;
 
-    private Stop mStop;
-
     public StopTime(String tripId, String arrivalTime, String departureTime, String stopId, String stopHeadsign, int stopSequence, int pickupType, int dropOffType, String startStopId, String finalStopId) {
         this.mTripId = tripId;
         this.mArrivalTime = arrivalTime;
@@ -31,9 +29,15 @@ public class StopTime implements IStopItem, Serializable {
         this.mFinalStopId = finalStopId;
     }
 
-    public StopTime(String arrivalTime, String departureTime) {
+    // Used to set Next Stop Times
+    public StopTime(String arrivalTime, String departureTime, int pickupType, int dropOffType, String startStopId, String finalStopId) {
         this.mArrivalTime = arrivalTime;
         this.mDepartureTime = departureTime;
+        this.mPickupType = pickupType;
+        this.mDropOffType = dropOffType;
+        this.mStartStopId = startStopId;
+        this.mFinalStopId = finalStopId;
+
     }
 
     /* Implementation of interface IStopTime */

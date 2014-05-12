@@ -11,6 +11,7 @@ import java.util.List;
 import ca.synx.mississaugatransit.db.CacheRouteStopsTable;
 import ca.synx.mississaugatransit.db.CacheRoutesTable;
 import ca.synx.mississaugatransit.db.CacheStopTimesTable;
+import ca.synx.mississaugatransit.db.CacheStopsTable;
 import ca.synx.mississaugatransit.db.FavoriteTable;
 import ca.synx.mississaugatransit.models.Favorite;
 import ca.synx.mississaugatransit.models.Route;
@@ -230,6 +231,10 @@ public final class StorageHandler {
     }
 
     public List<Stop> getStops() {
+        return getStops("");
+    }
+
+    public List<Stop> getStops(String stopId) {
 
         List<Stop> list = new ArrayList<Stop>();
 
@@ -237,24 +242,50 @@ public final class StorageHandler {
         Cursor cursor = null;
 
         try {
-            cursor = db.rawQuery("SELECT * FROM " + CacheStopTimesTable.TABLE_NAME + " ORDER BY " + CacheStopTimesTable.COLUMN_STOP_STORAGE_ID, null);
+            cursor = db.query(CacheStopsTable.TABLE_NAME,
+                    new String[]
+                            {
+                                    CacheStopsTable.COLUMN_STORAGE_ID,
+                                    CacheStopsTable.COLUMN_STOP_ID,
+                                    CacheStopsTable.COLUMN_STOP_CODE,
+                                    CacheStopsTable.COLUMN_STOP_NAME,
+                                    CacheStopsTable.COLUMN_STOP_DESC,
+                                    CacheStopsTable.COLUMN_STOP_LAT,
+                                    CacheStopsTable.COLUMN_STOP_LNG,
+                                    CacheStopsTable.COLUMN_ZONE_ID,
+                                    CacheStopsTable.COLUMN_STOP_URL,
+                                    CacheStopsTable.COLUMN_LOCATION_TYPE,
+                                    CacheStopsTable.COLUMN_PARENT_STATION,
+                                    CacheStopsTable.COLUMN_STOP_SEQUENCE
+                            },
+                    (stopId != "") ? CacheStopsTable.COLUMN_STOP_ID + " = ? " : "",
+                    (stopId != "") ? new String[]{stopId} : null,
+                    null, null, null
+            );
 
             if (cursor.moveToFirst() && cursor.getCount() > 0) {
 
                 while (cursor.isAfterLast() == false) {
 
-                    /*
                     Stop stop = new Stop(
-                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_ID)),
-                            cursor.getString(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_NAME)),
-                            cursor.getDouble(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_LAT)),
-                            cursor.getDouble(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_LNG)),
-                            cursor.getInt(cursor.getColumnIndex(CacheStopTimesTable.COLUMN_STOP_SEQUENCE))
+                            cursor.getInt(cursor.getColumnIndex(CacheStopsTable.COLUMN_STORAGE_ID)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_ID)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_CODE)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_NAME)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_DESC)),
+                            cursor.getDouble(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_LAT)),
+                            cursor.getDouble(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_LNG)),
+                            cursor.getInt(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_SEQUENCE)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_ZONE_ID)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_STOP_URL)),
+                            cursor.getInt(cursor.getColumnIndex(CacheStopsTable.COLUMN_LOCATION_TYPE)),
+                            cursor.getString(cursor.getColumnIndex(CacheStopsTable.COLUMN_PARENT_STATION))
+
                     );
 
                     // Add item to list.
                     list.add(stop);
-*/
+
                     // Continue.
                     cursor.moveToNext();
                 }
@@ -271,20 +302,28 @@ public final class StorageHandler {
     }
 
     public void saveStops(List<Stop> stops) {
-/*
+
         SQLiteDatabase db = this.mDatabaseHandler.getWritableDatabase();
 
         try {
             for (Stop stop : stops) {
                 ContentValues values = new ContentValues();
-                values.put(CacheStopTimesTable.COLUMN_STOP_ID, stop.getStopId());
-                values.put(CacheStopTimesTable.COLUMN_STOP_NAME, stop.getStopName());
-                values.put(CacheStopTimesTable.COLUMN_STOP_LAT, stop.getStopLat());
-                values.put(CacheStopTimesTable.COLUMN_STOP_LNG, stop.getStopLng());
-                values.put(CacheStopTimesTable.COLUMN_STOP_SEQUENCE, stop.getStopSequence());
-                values.put(CacheStopTimesTable.COLUMN_SERVICE_DATE, GTFS.getServiceTimeStamp());
+                values.put(CacheStopsTable.COLUMN_STOP_ID, stop.getStopId());
+                values.put(CacheStopsTable.COLUMN_STOP_CODE, stop.getStopCode());
+                values.put(CacheStopsTable.COLUMN_STOP_NAME, stop.getStopName());
+                values.put(CacheStopsTable.COLUMN_STOP_DESC, stop.getStopDesc());
+                values.put(CacheStopsTable.COLUMN_STOP_LAT, stop.getStopLat());
+                values.put(CacheStopsTable.COLUMN_STOP_LNG, stop.getStopLng());
+                values.put(CacheStopsTable.COLUMN_ZONE_ID, stop.getZoneId());
+                values.put(CacheStopsTable.COLUMN_STOP_URL, stop.getStopUrl());
+                values.put(CacheStopsTable.COLUMN_LOCATION_TYPE, stop.getLocationType());
+                values.put(CacheStopsTable.COLUMN_PARENT_STATION, stop.getParentStation());
+                values.put(CacheStopsTable.COLUMN_STOP_SEQUENCE, stop.getStopSequence());
 
-                db.insert(CacheStopTimesTable.TABLE_NAME, null, values);
+                long insertId = db.insert(CacheStopsTable.TABLE_NAME, null, values);
+
+                // Assign storageId to route.
+                stop.setStorageId((int) insertId);
             }
         } catch (Exception e) {
             Log.e("StorageHandler:saveStops", "" + e.getMessage());
@@ -292,8 +331,6 @@ public final class StorageHandler {
         } finally {
             closeConnection(db, null);
         }
-
-        */
     }
 
     public List<StopTime> getStopTimes(Stop stop) {

@@ -99,10 +99,14 @@ public class UpcomingStopTimesTask extends AsyncTask<Object, Void, List<StopTime
                         stopTime.getArrivalTime(),
                         String.format(
                                 mContext.getString(R.string.next_stop_time),
-                                stopTime.getDepartureTime(),
                                 String.valueOf(timeDifference)
-                        )
+                        ),
+                        stopTime.getPickupType(),
+                        stopTime.getDropOffType(),
+                        stopTime.getStartStopId(),
+                        stopTime.getFinalStopId()
                 );
+
 
                 upcomingStopTimes.add(nearStopTime);
             } catch (Exception e) {

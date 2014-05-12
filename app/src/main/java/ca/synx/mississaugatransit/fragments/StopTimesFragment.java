@@ -14,6 +14,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.synx.mississaugatransit.adapters.StopTimeAdapter;
@@ -23,13 +24,16 @@ import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.models.Stop;
 import ca.synx.mississaugatransit.models.StopTime;
 import ca.synx.mississaugatransit.tasks.StopTimesTask;
+import ca.synx.mississaugatransit.tasks.StopsTask;
 import ca.synx.mississaugatransit.tasks.UpcomingStopTimesTask;
 
-public class StopTimesFragment extends Fragment implements IFragment, StopTimesTask.IStopTimesTask, UpcomingStopTimesTask.IUpcomingStopTimesTask {
+public class StopTimesFragment extends Fragment implements IFragment, StopTimesTask.IStopTimesTask, StopsTask.IStopsTask, UpcomingStopTimesTask.IUpcomingStopTimesTask {
 
     private Route mRoute;
     private Stop mStop;
     private String mRouteDate;
+    private List<StopTime> mStopTimes;
+    private List<Stop> mStops;
 
     private View mView;
     private ProgressDialog mProgressDialog;
@@ -40,7 +44,6 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
 
     private GridView mStopTimesUpcomingStopsListView;
     private GridView mStopTimesAllStopsListView;
-
 
     private RoutesViewFlipperFragment.IRoutesViewFlipperFragment mRoutesViewFlipperFragment;
 
@@ -108,19 +111,57 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
 
     @Override
     public void onStopTimesTaskComplete(List<StopTime> stopTimes) {
-        mStop.setStopTimes(stopTimes);
-        mStopTimeAdapter = new StopTimeAdapter<StopTime>(getActivity().getApplicationContext(), R.layout.item_stop_time, stopTimes);
-        mStopTimesAllStopsListView.setAdapter(mStopTimeAdapter);
-        mProgressDialog.cancel();
+        this.mStop.setStopTimes(stopTimes);
+        this.mStopTimes = stopTimes;
 
-        // Calculate upcoming stop times.
-        new UpcomingStopTimesTask(getActivity().getApplicationContext(), this, 3).execute(stopTimes);
+        // Make sure stop information gets loaded for stop times.
+        mProgressDialog.setMessage(
+                getString(R.string.action_loading_stop_information)
+        );
+
+        new StopsTask(this).execute();
     }
 
     @Override
-    public void onUpcomingStopTimesTaskComplete(List<StopTime> stopTimes) {
-        mStop.setNextStopTimes(stopTimes);
-        mUpcomingStopTimeAdapter = new StopTimeAdapter<StopTime>(getActivity().getApplicationContext(), R.layout.item_stop_time, stopTimes);
+    public void onStopsTaskComplete(List<Stop> stops) {
+
+        // Added Strings
+        List<String> requiredStops = new ArrayList<String>();
+
+        // Gather all required stops.
+        for (StopTime stopTime : mStopTimes) {
+            if (!requiredStops.contains(stopTime.getStopId()))
+                requiredStops.add(stopTime.getStopId());
+            if (!requiredStops.contains(stopTime.getStartStopId()))
+                requiredStops.add(stopTime.getStartStopId());
+            if (!requiredStops.contains(stopTime.getFinalStopId()))
+                requiredStops.add(stopTime.getFinalStopId());
+        }
+
+        // Add stops
+        this.mStops = new ArrayList<Stop>();
+
+        for (Stop stop : stops) {
+            if (requiredStops.contains(stop.getStopId()))
+                this.mStops.add(stop);
+        }
+
+        // Calculate upcoming stop times.
+        new UpcomingStopTimesTask(getActivity().getApplicationContext(), this, 3).execute(mStopTimes);
+
+    }
+
+    @Override
+    public void onUpcomingStopTimesTaskComplete(List<StopTime> nextStopTimes) {
+        mProgressDialog.cancel();
+
+        // Set Stop Times
+        mStopTimeAdapter = new StopTimeAdapter<StopTime>(getActivity().getApplicationContext(), R.layout.item_stop_time, this.mStops, this.mStopTimes);
+        mStopTimesAllStopsListView.setAdapter(mStopTimeAdapter);
+
+        // Set Next Stop Times
+        mStop.setNextStopTimes(nextStopTimes);
+        mUpcomingStopTimeAdapter = new StopTimeAdapter<StopTime>(getActivity().getApplicationContext(), R.layout.item_stop_time, this.mStops, nextStopTimes);
         mStopTimesUpcomingStopsListView.setAdapter(mUpcomingStopTimeAdapter);
     }
 
@@ -167,4 +208,5 @@ public class StopTimesFragment extends Fragment implements IFragment, StopTimesT
     @Override
     public void fragmentShowMenu() {
     }
+
 }

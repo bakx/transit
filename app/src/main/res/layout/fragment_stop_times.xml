@@ -44,7 +44,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/stopTimeNameTextView"
-        android:numColumns="3" />
+        android:layout_centerHorizontal="true"
+        android:numColumns="1" />
 
     <TextView
         android:id="@+id/stopTimeAllStopsTextView"
@@ -61,6 +62,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/stopTimeAllStopsTextView"
-        android:numColumns="4" />
+        android:numColumns="2" />
 
 </RelativeLayout>

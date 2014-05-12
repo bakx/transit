@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stopsViewFlipper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <ViewFlipper
+        android:id="@+id/stopsViewFlipperViewFlipper"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <fragment
+            android:id="@+id/stopsViewFlipperStopsFragment"
+            class="ca.synx.mississaugatransit.fragments.StopsFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+    </ViewFlipper>
+
+</RelativeLayout>

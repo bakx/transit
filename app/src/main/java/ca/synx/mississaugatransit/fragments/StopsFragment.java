@@ -25,8 +25,9 @@ import ca.synx.mississaugatransit.interfaces.IFragment;
 import ca.synx.mississaugatransit.models.Route;
 import ca.synx.mississaugatransit.models.Stop;
 import ca.synx.mississaugatransit.tasks.RouteStopsTask;
+import ca.synx.mississaugatransit.tasks.StopsTask;
 
-public class StopsFragment extends Fragment implements IFragment, RouteStopsTask.IRouteStopsTask, SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
+public class StopsFragment extends Fragment implements IFragment, RouteStopsTask.IRouteStopsTask, StopsTask.IStopsTask, SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
 
     private Route mRoute;
     private String mRouteDate;
@@ -40,6 +41,7 @@ public class StopsFragment extends Fragment implements IFragment, RouteStopsTask
 
     private SearchView mSearchView;
     private MenuItem mSearchMenuItem;
+    private boolean routeView;
 
     private RoutesViewFlipperFragment.IRoutesViewFlipperFragment mRoutesViewFlipperFragment;
 
@@ -101,8 +103,14 @@ public class StopsFragment extends Fragment implements IFragment, RouteStopsTask
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
         if (activity instanceof RoutesViewFlipperFragment.IRoutesViewFlipperFragment) {
             mRoutesViewFlipperFragment = (RoutesViewFlipperFragment.IRoutesViewFlipperFragment) activity;
+            routeView = true;
+        } else if (activity instanceof RoutesViewFlipperFragment.IRoutesViewFlipperFragment) {
+            mRoutesViewFlipperFragment = (RoutesViewFlipperFragment.IRoutesViewFlipperFragment) activity;
+            routeView = true;
+
         } else {
             throw new ClassCastException(activity.toString()
                     + " must implement RoutesViewFlipperFragment.IRoutesViewFlipperFragment");
@@ -122,6 +130,14 @@ public class StopsFragment extends Fragment implements IFragment, RouteStopsTask
 
     @Override
     public void onRouteStopsTaskComplete(List<Stop> stops) {
+        mStopAdapter = new StopAdapter<Stop>(getActivity().getApplicationContext(), R.layout.item_stop, stops);
+        mRouteStopListView.setAdapter(mStopAdapter);
+        mRouteStopListView.setOnItemClickListener(this);
+        mProgressDialog.cancel();
+    }
+
+    @Override
+    public void onStopsTaskComplete(List<Stop> stops) {
         mStopAdapter = new StopAdapter<Stop>(getActivity().getApplicationContext(), R.layout.item_stop, stops);
         mRouteStopListView.setAdapter(mStopAdapter);
         mRouteStopListView.setOnItemClickListener(this);

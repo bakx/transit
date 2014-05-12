@@ -12,17 +12,22 @@ import java.util.List;
 
 import ca.synx.mississaugatransit.app.R;
 import ca.synx.mississaugatransit.interfaces.IStopItem;
+import ca.synx.mississaugatransit.models.Stop;
+import ca.synx.mississaugatransit.util.GTFS;
+import ca.synx.mississaugatransit.util.Theme;
 
 public class StopTimeAdapter<T extends IStopItem> extends ArrayAdapter<T> {
     private Context mContext;
     private int mResourceId;
     private List<T> mList;
+    private List<Stop> mStops;
 
-    public StopTimeAdapter(Context context, int resourceId, List<T> list) {
+    public StopTimeAdapter(Context context, int resourceId, List<Stop> stops, List<T> list) {
         super(context, resourceId, list);
 
         this.mContext = context;
         this.mResourceId = resourceId;
+        this.mStops = stops;
         this.mList = list;
     }
 
@@ -48,6 +53,7 @@ public class StopTimeAdapter<T extends IStopItem> extends ArrayAdapter<T> {
             viewHolder.nameTextView = (TextView) view.findViewById(R.id.nameTextView);
             viewHolder.stopTimeTextView = (TextView) view.findViewById(R.id.stopTimeTextView);
             viewHolder.nextStopTimeTextView = (TextView) view.findViewById(R.id.nextStopTimeTextView);
+            viewHolder.finalStopStopTimeTextView = (TextView) view.findViewById(R.id.finalStopStopTimeTextView);
             viewHolder.locationTypeImageView = (ImageView) view.findViewById(R.id.locationTypeImageView);
 
             // Cache holder for performance reasons.
@@ -63,7 +69,14 @@ public class StopTimeAdapter<T extends IStopItem> extends ArrayAdapter<T> {
         // Update titles of the view item.
         viewHolder.stopTimeTextView.setText(t.getArrivalTime());
         viewHolder.nextStopTimeTextView.setText(t.getDepartureTime());
-        //viewHolder.locationTypeImageView.setImageResource(GTFS.getLocationTypeImage(t..(), Theme.IconType.DARK));
+
+        Stop finalStop = getStop(t.getFinalStopId());
+        if (finalStop != null) {
+            viewHolder.finalStopStopTimeTextView.setText(finalStop.getStopName());
+            int stopImage = GTFS.getLocationTypeImage(finalStop.getLocationType(), Theme.IconType.DARK);
+            if (stopImage != 0)
+                viewHolder.locationTypeImageView.setImageResource(stopImage);
+        }
 
         // Attach object T to view.
         view.setTag(R.id.object_iroute_ifilter, t);
@@ -71,10 +84,21 @@ public class StopTimeAdapter<T extends IStopItem> extends ArrayAdapter<T> {
         return view;
     }
 
+    private Stop getStop(String stopId) {
+
+        for (int i = 0; i < mStops.size(); i++) {
+            if (mStops.get(i).getStopId().equals(stopId))
+                return mStops.get(i);
+        }
+
+        return null;
+    }
+
     private static class ViewHolder {
         public TextView nameTextView;
         public TextView stopTimeTextView;
         public TextView nextStopTimeTextView;
+        public TextView finalStopStopTimeTextView;
         public ImageView locationTypeImageView;
     }
 }

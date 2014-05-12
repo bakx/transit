@@ -23,6 +23,7 @@
 
     <!-- Stops Feedback -->
     <string name="action_loading_stops">Loading stops for:\nRoute %1$s\non %2$s</string>
+    <string name="action_loading_stop_information">Loading stop information</string>
     <string name="action_displaying_stops">%1$s (%2$s)\non %3$s</string>
 
     <!-- StopTimes Feedback -->
@@ -32,7 +33,7 @@
     <!-- Actions -->
     <string name="action_search">Search</string>
     <string name="action_settings">Settings</string>
-    <string name="next_stop_time">%1$s (%2$s min)</string>
+    <string name="next_stop_time">%1$s min</string>
 
     <!-- Tag Object identifiers -->
     <item name="object_iroute_ifilter" type="id"></item>
