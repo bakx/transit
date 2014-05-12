@@ -99,7 +99,7 @@
 
     <style name="ItemStopTimeTextNextView">
         <item name="android:textColor">#ff2e2e2e</item>
-        <item name="android:padding">4dp</item>
+        <item name="android:padding">1dp</item>
     </style>
 
 </resources>

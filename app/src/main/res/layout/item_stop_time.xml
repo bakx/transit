@@ -3,7 +3,6 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/stopTimeItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -11,42 +10,58 @@
         android:layout_toRightOf="@+id/numberTextView"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/stopTimeTextView"
-            style="@style/ItemStopTimeTextView"
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/nextStopTimeTextView"
-            style="@style/ItemStopTimeTextNextView"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/stopTimeTextView"
+                style="@style/ItemStopTimeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Text"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/nextStopTimeTextView"
+                style="@style/ItemStopTimeTextNextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/stopTimeTextView"
+                android:text="Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/locationTypeImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/ic_bus_stop_dark" />
+
+            <TextView
+                android:id="@+id/finalStopStopTimeTextView"
+                style="@style/ItemStopTimeTextNextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Medium Text"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+        </LinearLayout>
+
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/locationTypeImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/stopTimeItem"
-        android:layout_centerVertical="true"
-        android:scaleX="1.0"
-        android:scaleY="1.0"
-        android:src="@drawable/ic_bus_stop_dark" />
-
-    <TextView
-        android:id="@+id/finalStopStopTimeTextView"
-        style="@style/ItemStopTimeTextNextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/stopTimeItem"
-        android:layout_toRightOf="@id/locationTypeImageView"
-        android:gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
